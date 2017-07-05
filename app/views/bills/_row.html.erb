@@ -1,0 +1,23 @@
+<tr>
+  <td><%= link_to bill.id, bill %></td>
+  <td><%= bill.reference %></td>
+  <td><%= bill.vendor.present? ? bill.vendor.company_name : "--" %></td>
+  <td><%= bill.setup.present? ? bill.setup.typeofsetup : "--" %></td>
+  <!--<td>-->
+    <!--<%#= bill.lastpayment %>-->
+  <!--</td>-->
+  <td>
+    <%= number_with_precision(bill.amount, precision: 2) %>
+  </td>
+  <td>
+    <%= number_with_precision(bill.balance, precision: 2) %>
+  </td>
+  <td><%= display_formatted_date(bill.transaction_date) %></td>
+  <td><%= display_formatted_date(bill.duedate) %></td>
+  <td><%= bill.status.present? ? bill.status.titleize : "--" %>
+  </td>
+  <td>
+    <%= link_to 'Edit', bill, class: "btn btn-primary" %>
+    <%= link_to 'Delete', bill, method: :delete, data: { confirm: 'Are you sure?' },class: "btn btn-danger" %>
+  </td>
+</tr>

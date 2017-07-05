@@ -1,0 +1,235 @@
+
+
+<script type="text/javascript">
+
+$(function(){
+        
+        $("#elastic_grid_demo").elastic_grid({
+            'showAllText' : 'All',
+            'items' :
+            [
+                <% @apps.each_with_index do |app,index| %>
+                {
+                        
+                        'title'         : '<%= app.app_name %>',
+                        'description'   : '<b>Description:</b> <span><%=app.app_description%></span>' +
+                            <%if app.backend_languages%>
+                                '<p>'+ '<b>'+'Backend Languages: ' + '</b>' +                   
+                                <%app.backend_languages.uniq.each_with_index do |skil,i|%>
+                                    '<span><%=skil.end_lang%></span>' +
+                                <%end%>'.'
+                                +'</p>'
+                            <%end%>+
+                            <%if app.backend_frameworks%>
+                                '<p>'+ '<b>'+'Backend Frameworks: ' + '</b>' +                   
+                                <%app.backend_frameworks.uniq.each_with_index do |skil,i|%>
+                                    '<span><%=skil.end_framework%></span>' +
+                                <%end%>'.'
+                                +'</p>'
+                            <%end%>+
+                            <%if app.backend_environments%>
+                                '<p>'+ '<b>'+'Backend Environments: ' + '</b>' +                   
+                                <%app.backend_environments.uniq.each_with_index do |skil,i|%>
+                                    '<span><%=skil.end_name%></span>' +
+                                <%end%>'.'
+                                +'</p>'
+                            <%end%>+
+                            <%if app.backend_data_stores%>
+                                '<p>'+ '<b>'+'Backend Data Stores: ' + '</b>' +                   
+                                <%app.backend_data_stores.uniq.each_with_index do |skil,i|%>
+                                    '<span><%=skil.end_name%></span>' +
+                                <%end%>'.'
+                                +'</p>'
+                            <%end%>+
+                            <%if app.backend_memory_storage%>
+                                '<p>'+ '<b>'+'Backend Memory Storage: ' + '</b>' +                   
+                                <%app.backend_memory_storage.uniq.each_with_index do |skil,i|%>
+                                    '<span><%=skil.end_technology%></span>' +
+                                <%end%>'.'
+                                +'</p>'
+                            <%end%>+
+                            <%if app.frontend_languages%>                
+                                '<p>'+ '<b>'+'Frontend Languages: ' + '</b>' +
+                                <%app.frontend_languages.uniq.each_with_index do |skil,i|%>
+                                    '<span><%=skil.end_lang%></span>' +
+                                <%end%>'.'
+                                +'</p>'
+                            <%end%>+
+                            <%if app.frontend_frameworks%>
+                                '<p>'+ '<b>'+'Frontend Frameworks: ' + '</b>' +                   
+                                <%app.frontend_frameworks.uniq.each_with_index do |skil,i|%>
+                                    '<span><%=skil.end_framework%></span>' +
+                                <%end%>'.'
+                                +'</p>'
+                            <%end%>+
+                            <%if app.frontend_plugins%>                 
+                                '<p>'+ '<b>'+'Frontend Plugins: ' + '</b>' +
+                                <%app.frontend_plugins.uniq.each_with_index do |skil,i|%>
+                                    '<span><%=skil.end_name%></span>' +
+                                <%end%>'.'
+                                +'</p>'
+                            <%end%>
+
+                        ,
+                        'thumbnail'     : ['<%=app.avatar.url(:medium)%>', ''],
+                        'large'         : ['<%=app.avatar.url(:medium)%>', ''],
+                        'button_list'   :
+                        [
+                            // { 'title':'Demo', 'url' : 'http://bonchen.net/' },
+                            // { 'title':'Download', 'url':'http://porfolio.bonchen.net/'}
+                        ],
+
+                        'tags': ['<%index%>','<%=app.product.portfolio.portfolio_name.split(' ').join('')%>']
+                        
+                    
+                }
+
+
+                    <% unless @apps.size == (index + 1)%>
+                        ,
+                    
+                    <% else %>
+                    <% end %>
+                <% end %>
+            ]
+        });
+    });
+
+    
+
+
+</script>
+
+&nbsp;
+<div class="row">
+    <div class="col-md-6">
+        <div class="user_bio_data">
+            <div class="col-md-4">   
+               
+                    <%= image_tag @user.avatar.url(:small) %>
+                    
+            </div>   
+            <div class="col-md-5">
+                <h4><small style="color:#000;"><span class="glyphicon glyphicon-user"></span></small> <b><%=@user.name%></b></h4>
+                <p><span class="glyphicon glyphicon-envelope"></span> <%=mail_to @user.email%></p>
+                
+            </div>
+
+
+			<div class="col-md-2">
+               	 <% if user_signed_in? && @user.id == current_user.id%>
+			            <%= link_to 'Edit Profile', "/users/edit" ,:class => "btn btn-primary"%>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#share-profile" style="margin-top: 10px;">Share</button>
+			     <%end%>
+            </div>
+
+        </div> 
+    </div>
+
+    <div class="col-md-6 break_word">
+        <div class="user_bio_data">
+            <b><p><span class="glyphicon glyphicon-briefcase"></span> Technologies</p></b>
+            <p style="font-weight: bold;">Backend
+                <p>Languages:
+                    <% @apps.each_with_index do |app,index| %>
+                        <%app.backend_languages.uniq.each_with_index do |skil,i|%>
+                            <%if index == 0 && i == 0%>
+                                <span><%=skil.end_lang%></span>
+                            <%else%>
+                                <span>,<%=skil.end_lang%></span>
+                            <%end%>
+                        <%end%>
+                    <%end%>
+                </p>
+                <p>Frameworks:
+                <% @apps.each_with_index do |app,index| %>
+                    <%app.backend_frameworks.uniq.each_with_index do |skil,i|%>
+                        <%if index == 0 && i == 0%>
+                            <span><%=skil.end_framework%></span>
+                        <%else%>
+                            <span>,<%=skil.end_framework%></span>
+                        <%end%>
+                    <%end%>
+                <%end%>
+                </p>
+				<p>Data Stores:
+                <% @apps.each_with_index do |app,index| %>    
+                    <%app.backend_data_stores.uniq.each_with_index do |store,i|%>
+                        <%if index == 0 && i == 0%>
+                            <span><%=store.end_name%></span>
+                        <%else%>
+                            <span>,<%=store.end_name%></span>
+                        <%end%>
+                    <%end%>
+                <%end%>
+                </p>
+
+
+            </p>
+            <p style="font-weight: bold;">Frontend
+                <p>Languages:
+                <% @apps.each_with_index do |app,index| %>    
+                    <%app.frontend_languages.uniq.each_with_index do |skil,i|%>
+                        <%if index == 0 && i == 0%>
+                            <span><%=skil.end_lang%></span>
+                        <%else%>
+                            <span>,<%=skil.end_lang%></span>
+                        <%end%>
+                    <%end%>
+                <%end%>
+                </p>
+                <p>Frameworks:
+                <% @apps.each_with_index do |app,index| %>    
+                    <%app.frontend_frameworks.uniq.each_with_index do |skil,i|%>
+                        <%if index == 0 && i == 0%>
+                            <span><%=skil.end_framework%></span>
+                        <%else%>
+                            <span>,<%=skil.end_framework%></span>
+                        <%end%>
+                    <%end%>
+                <%end%>
+                </p>
+            </p>
+                
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <h3>Feature Works</h3>
+        <hr/>
+    </div>
+</div>
+<div class="row">
+    <div id="elastic_grid_demo">
+    </div>
+</div>
+
+
+
+  <!-- Modal -->
+  <div class="modal fade" id="share-profile" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Share Profile</h4>
+        </div>
+        <div class="modal-body">
+          <p>Enter email to share your profile:</p>
+          <form action="/users/send_email" method="get">
+            <div class="col-sm-6">
+                <input type="email" class="form-control" name="email_msg" placeholder="Enter email..">
+            </div>
+            <input type="submit" class ="btn btn-primary" value="Share">
+          </form>
+        </div>
+        <div class="modal-footer" >
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>

@@ -1,0 +1,62 @@
+
+<style>
+.social_icon
+{
+  background-color: whitesmoke;
+  border: none !important;
+  box-shadow: none !important;
+  height: 250px;
+}
+</style>
+
+<script>
+
+
+$(document).ready(function(){
+$(function(){
+  $('.check-valid').click(function() {
+      if(!$('#checkbox-valid').is(':checked'))
+      {
+          alert('Please accept terms and conditions before proceeding.')
+          return false
+      }
+        
+      
+  });
+  
+ 
+});
+})
+</script>
+<div class="authform social_icon">
+  <div class="row col-xs-12 text-center" style="width:105%">
+    <h3 class="text-center">Sign In</h3>
+  </div>
+
+  <%= form_for(resource, :as => resource_name, :url => session_path(resource_name), :html => { :role => 'form',class: 'social_icon'}) do |f| %>
+    <%= devise_error_messages! %>
+    <div class="form-group">
+      <%- if devise_mapping.registerable? %>
+        <%= link_to 'Sign up', new_registration_path(resource_name), class: 'right'  %>
+      <% end -%>
+      <%= f.label :email %>
+      <%= f.email_field :email, :autofocus => true,:required => true, class: 'form-control' %>
+    </div>
+    <div class="form-group">
+      <%- if devise_mapping.recoverable? %>
+        <%= link_to "Forgot password?", new_password_path(resource_name), class: 'right' %>
+      <% end -%>
+      <%= f.label :password %>
+      <%= f.password_field :password, class: 'form-control' %>
+    </div>
+      <%= f.submit 'Sign in', :class => 'button right ' %>
+      <% if devise_mapping.rememberable? -%>
+        <div class="checkbox" style="width:150px">
+          <label>
+            <%= f.check_box :remember_me %> Remember me
+          </label>
+        </div>
+      <% end -%>
+       
+  <% end %>
+</div>

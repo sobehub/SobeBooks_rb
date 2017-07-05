@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  app_name: MyString
+  visibility: false
+  repo_count: 1
+  type: 
+  last_push: 2015-12-09 14:31:38
+  user_id: 
+  portfolio_id: 
+  product_id: 
+
+two:
+  app_name: MyString
+  visibility: false
+  repo_count: 1
+  type: 
+  last_push: 2015-12-09 14:31:38
+  user_id: 
+  portfolio_id: 
+  product_id: 

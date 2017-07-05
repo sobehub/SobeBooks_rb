@@ -1,0 +1,215 @@
+<h2 >Bank Balance Report</h2>
+<form action="/reports/bankbalance" >
+  <div class="jumbotron" style="background-color:whitesmoke">
+<div class="row" style=" margin-left: 108px;">
+    <div class="col-xs-3">
+       <label style="margin-left: 2px;">Date From</label>
+       <input type="text" name="date_from" id="date_from" value="<%= params[:date_from]%>" class="form-control">
+    </div>
+    <div class="col-xs-3">
+       <label style="margin-left: 2px;">Date To</label>
+       <input type="text" class="form-control" name="date_to" value="<%= params[:date_to]%>" id="date_to">
+    </div>
+    <div class="col-xs-3">
+  <label style="margin-left: 2px;">Bank</label>
+<br>
+    <%= select_tag "bank_id",
+                   options_for_select(current_user.setups.where(:setuptype=>'bank').map{|s|[s.typeofsetup, s.id]},
+                                      params[:bank_id].to_i),
+                   :id => "setup_id",prompt: "Select Bank" , class: 'form-control' , required: true%>
+
+  </div>
+   <div class="col-xs-3" style="margin-top: 25px;">
+      
+    <input type="submit" name="" class="btn btn-primary form-control"  value="search" id="sub">
+    </div>
+</div>
+
+</div>
+
+<br>
+  
+
+
+</form>
+
+
+
+<%if params[:action] == "bankbalance" && @data.present?  %>
+<div id="dvData">
+<table class="table table-hover table-striped">
+ <h2><a href="#" class="export btn btn-success pull-right">Export To Excel</a></h2>
+<br>
+  <thead>
+    <tr>
+      <td><b>TransactionId</b></td>
+      <td><b>Id</b></td>
+      <td><b>Name</b></td>
+      <td><b>Last paid at</b></td>
+      <td><b>Total slips</b></td>
+      <td><b>Total Paid</b></td>
+      <td><b>Cash Type</b></td>
+      <td><b>Balance</b></td>
+      <td colspan="3"></td>
+    </tr>
+  </thead>
+
+  <tbody>
+<%cash_in=0%>
+<%cash_out=0%>
+<%cash=0%>
+<%cash = @begining_balance || 0 %>
+<br>
+<h5 class="pull-right" style="margin-right: 83px;"><b>Starting Balance: <%=number_with_precision(cash  , :precision=> 2)%></b></h5>
+
+ <% @data.each do |x|%>
+<% obj = x.class.name=="Vendortransaction" ? x.vendor : x.client %>
+<% obj2 = x.class.name=="Vendortransaction" ? x.transactionbills : x.transactioninvoices  %>
+<% obj3 = x.class.name=="Vendortransaction" ? x.bills : x.invoices  %>
+<tr>
+  <td><%= x.id%></td>
+   
+  <td><%= obj.id %></td>
+<% if x.class.name=="Vendortransaction"%>
+    <td><%= x.vendor.company_name %></td>
+
+  <%elsif x.class.name=="Clienttransaction"%>
+    <td><%= x.client.company_name %></td>
+
+<%end%> 
+<% if x.class.name=="Vendortransaction"%>
+    <td><%=x.transactionbills.last.updated_at.to_date if x.transactionbills.present? %></td>
+
+  <%elsif x.class.name=="Clienttransaction"%>
+    <td><%=x.transactioninvoices.last.updated_at.to_date if x.transactioninvoices.present? %></td>
+
+<%end%> 
+  <% if x.class.name=="Vendortransaction"%>
+    <td><%=x.transactionbills.count if x.transactionbills.present? %></td>
+
+  <%elsif x.class.name=="Clienttransaction"%>
+    <td><%=x.transactioninvoices.count if x.transactioninvoices.present? %></td>
+
+<%end%> 
+   
+   <% if x.class.name=="Vendortransaction"%>
+    <td><%=number_with_precision(x.transactionbills.map{|a| a.balance}.compact.sum.to_f,precision: 2)%></td> 
+
+  <%elsif x.class.name=="Clienttransaction"%>
+    <td><%=number_with_precision(x.transactioninvoices.map{|a| a.balance}.compact.sum.to_f,precision: 2)%></td> 
+
+<%end%> 
+
+   
+  <%if x.class.name=="Vendortransaction" %>
+  <td>cash out</td>
+    <%elsif x.class.name=="Clienttransaction"%>
+  <td>cash in</td>
+
+  <%end%>
+
+  <% if x.class.name=="Vendortransaction"%>
+    <%cash_out= x.transactionbills.map{|a| a.balance}.compact.sum.to_f%>
+    <td><%=number_with_precision(cash-=cash_out, :precision=>2)%></td> 
+
+
+  <%elsif x.class.name=="Clienttransaction"%>
+    <%cash_in=x.transactioninvoices.map{|a| a.balance}.compact.sum.to_f%>
+    <td><%=number_with_precision(cash+=cash_in, :precision=>2)%></td> 
+
+  <%end%>
+  
+</tr>
+<%end%>
+<br>
+
+  </tbody>
+
+</table>
+<h5 style="margin-right: 83px;" class="pull-right"><b>Ending Balance: <%= number_with_precision(cash, precision:2)%></b></h5>
+
+</div>
+<%elsif params[:bank_id] && @data.empty? %>
+
+
+<h4 class="text-center">No record found.</h4>
+
+<%end%>
+
+
+
+
+
+
+
+
+<script>
+
+
+  $(document).ready(function() {
+        $('#client_id').multiselect();
+    })
+  $(function() {
+    $( "#date_from" ).datepicker({ dateFormat: 'mm-dd-yy' }).val();
+    $( "#date_to" ).datepicker({ dateFormat: 'mm-dd-yy' }).val();
+  });
+
+
+$(document).ready(function () {
+
+    function exportTableToCSV($table, filename) {
+
+        var $rows = $table.find('tr:has(td)'),
+
+            // Temporary delimiter characters unlikely to be typed by keyboard
+            // This is to avoid accidentally splitting the actual contents
+            tmpColDelim = String.fromCharCode(11), // vertical tab character
+            tmpRowDelim = String.fromCharCode(0), // null character
+
+            // actual delimiter characters for CSV format
+            colDelim = '","',
+            rowDelim = '"\r\n"',
+
+            // Grab text from table into CSV formatted string
+            csv = '"' + $rows.map(function (i, row) {
+                var $row = $(row),
+                    $cols = $row.find('td');
+
+                return $cols.map(function (j, col) {
+                    var $col = $(col),
+                        text = $col.text();
+
+                    return text.replace(/"/g, '""'); // escape double quotes
+
+                }).get().join(tmpColDelim);
+
+            }).get().join(tmpRowDelim)
+                .split(tmpRowDelim).join(rowDelim)
+                .split(tmpColDelim).join(colDelim) + '"',
+
+            // Data URI
+            csvData = 'data:application/csv;charset=utf-8,' + encodeURIComponent(csv);
+
+        $(this)
+            .attr({
+            'download': filename,
+                'href': csvData,
+                'target': '_blank'
+        });
+    }
+
+    // This must be a hyperlink
+    $(".export").on('click', function (event) {
+        // CSV
+        exportTableToCSV.apply(this, [$('#dvData>table'), 'export.xls']);
+        
+        // IF CSV, don't do event.preventDefault() or return false
+        // We actually need this to be a typical hyperlink
+    });
+});
+
+
+
+
+</script>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">

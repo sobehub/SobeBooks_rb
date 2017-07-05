@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  instance_name: MyString
+  insatnce_type: MyString
+  used_for: MyString
+  hosting_id: 
+  dependency_id: 
+
+two:
+  instance_name: MyString
+  insatnce_type: MyString
+  used_for: MyString
+  hosting_id: 
+  dependency_id: 

@@ -1,0 +1,30 @@
+<%= simple_form_for(@bill) do |f| %>
+  <%= f.error_notification %>
+  <div class="form-inputs col-md-6 ">
+    <%= f.input :transaction_date, :as => :string, class: 'form-control', input_html: { class: 'tdate' } %>
+    <%= f.input :duedate, as: :string, required: true, input_html: { class: 'ddate' } %>
+
+    <%= f.input :reference , required: true%>
+    <%= f.input :amount , required: true%>
+    <%= f.input :notes , required: true%>
+
+    <%= f.select_tag "bill[setup_id]",
+                     options_for_select(current_user.setups.where(:setuptype=>'expense').map{|s|[s.typeofsetup, s.id]},
+                                        @bill.setup_id),:id=>"setup_id" , prompt: "Select Expense ID",
+                     class: 'form-control' , required: true %>
+    <br>
+
+    <%= f.select_tag "bill[vendor_id]",
+                     options_for_select(current_user.vendors.all.order_by_name.map{|s|[s.company_name, s.id]}),
+                     :id=>"bill" , prompt: "Select Vendor", class: 'form-control' %>
+  <br>
+   <%= f.select_tag "bill[status]", options_for_select(invoice_status_list,
+    @bill.status), :id=>"status", class: 'form-control' ,required: true%>
+  <br>
+
+   <div class="form-actions">
+    <%= f.button :submit, class: 'btn btn-primary' %>
+  </div>
+  </div>
+ 
+<% end %>

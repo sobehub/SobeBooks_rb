@@ -1,0 +1,27 @@
+<tr>
+  <td><%= link_to invoice.id, invoice%></td>
+  <td><%= invoice.reference%></td>
+  <td><%= invoice.client.present? ? invoice.client.company_name : "--"  %></td>
+  <td>
+    <%= number_with_precision(invoice.amount, precision: 2) %>
+  </td>
+  <td>
+    <%= number_with_precision(invoice.balance_amount, precision: 2) %>
+  </td>
+  <!--<td>-->
+    <!--<%#= invoice.lastpayment %>-->
+  <!--</td>-->
+  <td><%= display_formatted_date(invoice.transaction_date) %></td>
+  <td><%= display_formatted_date(invoice.duedate) %></td>
+  <td>
+    <%= number_with_precision(invoice.totalpaid, precision: 2) %>
+  </td>
+  <!--<td><%#= invoice.notes %></td>-->
+  <td><%= invoice.status.present? ? invoice.status.titleize : "--" %>
+  </td>
+  <td>
+    <%= link_to 'Edit', invoice, class: "btn btn-primary" %>
+    <%= link_to 'Delete', invoice, method: :delete, data: { confirm: 'Are you sure?' },class: "btn btn-danger" %>
+  </td>
+
+</tr>

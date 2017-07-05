@@ -1,0 +1,23 @@
+# == Schema Information
+#
+# Table name: clienttransactions
+#
+#  id               :integer          not null, primary key
+#  setup_id         :integer
+#  client_id        :integer
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#  user_id          :integer
+#  transaction_date :date
+#  duedate          :date
+#
+
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  setup_id: 
+  client_id: 
+
+two:
+  setup_id: 
+  client_id: 

@@ -1,0 +1,143 @@
+<h1>Editing Clienttransaction</h1>
+
+
+
+<script type="text/javascript">
+  var invoice_ids=[];
+  var invoice_balances=[];
+
+  jQuery(function($) {
+    $('#client_id').trigger('change');
+
+    $("#client_id").change(function() {
+      $("#tbody_empty").empty();
+      $('#total_blc').val(0);
+      invoice_ids=[];
+      invoice_balances=[];
+      var select ="Select";
+      var client_id = $('select#client_id :selected').val();
+      jQuery.getJSON('/invoices/invoices_of_a_single_client/' + client_id, function(result){
+        var invoices_client = "";
+
+        $.each(result, function( index, data ) {
+
+          invoices_client += '<tr> <td class="invoice_num"><a href="/invoices/'+ data.id +'">'+ data.id +
+              '</a> </td> <td class="invoice_reference"> '+ data.reference +' </td> <td class="invoice_amount">'+data.amount+
+              ' </td><td class="invoice_balance"><input name="balances[]" type="number" min="0" max="'+
+              parseFloat(data.balance_amount).toFixed(2) +'" value="' + parseFloat(data.balance_amount).toFixed(2) +'"/> </td> <td class="invoice_lastpayment">'+
+              data.lastpayment +' </td> <td class="invoice_duedate">'+ data.duedate +' </td><td class="invoice_totalpaid">'+
+              parseFloat(data.totalpaid).toFixed(2) +' </td> <td class="invoice_notes">'+ data.notes +'</td> <td> <a data-invoice-id="'+
+              data.id+'" class="btn btn-danger get_invoice_id append_row">Select</a></td></tr>';
+
+        });
+
+
+        $("#client_invoice tbody").html("");
+        $("#client_invoice tbody").html(invoices_client);
+
+      })
+      return false;
+    });
+  })
+
+  $(document).ready(function(){
+    $('body').on('change', '.blc', function() {
+      // $("#total_blc").val( parseFloat($("#total_blc").val()) + parseFloat($(this).val()) );
+      var sum = 0;
+      $(".blc").each(function() {
+        //add only if the value is number
+        if (!isNaN(this.value) && this.value.length != 0) {
+          sum += parseFloat(this.value);
+        }
+      });
+      $("#total_blc").val( sum );
+    });
+  });
+
+
+  $(document).ready(function(){
+
+    $("#divResults table tbody").bind("DOMSubtreeModified", function() {
+      if( $(this).children().length > 0 )
+        $('input[type="submit"]').show();
+      else
+        $('input[type="submit"]').hide();
+    });
+    $('body').on('click', '.append_row', function() {
+
+      var actual = $(this).parent().parent();
+      $(this).remove();
+      actual.find('[name="balances[]"]').addClass("blc");
+
+      value = actual.find('.blc').val();
+      if (!isNaN(value) && value.length != 0) {
+        $("#total_blc").val( parseFloat( $("#total_blc").val() ) + parseFloat(value) );
+      }
+
+      $('#divResults table tbody').append(actual);
+      $('#invoices').modal('hide');
+      // $('input[type="submit"]').show();
+
+      var invoice_id = actual.find(".invoice_num").text(); //Invoice ids
+      invoice_ids.push(invoice_id); //Id push in array
+      $('.transaction_invoice_id').val(invoice_ids); // SEnd to hidden field in form
+    });
+    $(function() {
+      $('#client_id').change(function(){
+        $('#divResults').show('2000');
+      });
+    });
+
+  });
+
+</script>
+
+<%= render 'form' %>
+
+
+
+
+<div id="invoices" class="modal fade col-xs-10"  role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content col-xs-12" style="width:150%">
+      <div class="modal-header">
+        <h3>Select Invoice</h3>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <table class="table table-hover" id="client_invoice">
+          <thead>
+          <tr>
+            <th >Invoice Num</th>
+            <th >Reference</th>
+            <th >Amount</th>
+            <th >Transaction Amount</th>
+            <th >Last Paid</th>
+            <th >Due Date</th>
+            <th >Total Paid</th>
+            <th >Notes</th>
+          </tr>
+          </thead>
+
+          <tbody>
+          </tbody>
+
+        </table>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  $(function() {
+    $(".tdate").datepicker({ dateFormat: 'mm-dd-yy' }).datepicker("setDate", new Date());
+    $(".ddate").datepicker({ dateFormat: 'mm-dd-yy' }).datepicker("setDate", new Date(Date.now() + (30 * 24 * 60 * 60 * 1000)));
+  });
+</script>

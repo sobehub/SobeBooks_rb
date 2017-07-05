@@ -1,0 +1,13 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Payment Type:</strong>
+    <td><%= @clienttransaction.setup.present? ? @clienttransaction.setup.typeofsetup: '---' %></td>
+</p>
+
+<p>
+  <strong>Client Name:</strong>
+        <td><%= @clienttransaction.client.present? ? @clienttransaction.client.name: '---' %></td>
+</p>
+
+<%= link_to 'Edit', edit_clienttransaction_path(@clienttransaction) %> |

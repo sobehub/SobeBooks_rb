@@ -1,0 +1,71 @@
+<%= simple_form_for(@vendortransaction) do |f| %>
+  <%= f.error_notification %>
+<div class="row">
+  <div class="form-inputs col-md-6">
+    <%= f.input :transaction_date, :as => :string, class: 'form-control', input_html: { class: 'tdate' } %>
+    <%= f.input :duedate, as: :string, required: true, input_html: { class: 'ddate' } %>
+
+    <label>Reference#/Check#/Wire#</label>
+      <input type="number" class="form-control" name="reference_no" >
+<br>
+    <select name="Cash_type" class="form-control">
+        <option selected disabled>Select Payment Type</option>
+        <option value="Cash">Cash</option>
+        <option value="Cheque">Check</option>
+        <option value="Wire Transfer">Wire Transfer</option>
+        <option value="Credit Card">Credit Card</option>
+    </select>
+<br>
+     	<%= f.select_tag "vendortransaction[setup_id]",
+                       options_for_select(current_user.setups.where(:setuptype=>'bank').map{|s|[s.typeofsetup, s.id]},
+                                          @vendortransaction.setup_id),:id=>"setup_id",
+                       prompt: "Select Bank Account", class: 'form-control' , required: true%>
+
+    <br>
+ <%= f.select_tag "vendortransaction[vendor_id]", options_for_select(current_user.vendors.order_by_name.map{|s|[s.company_name, s.id]},
+                                                                     @vendortransaction.vendor_id),
+                  prompt: "Select Vendor", class: 'form-control' , id: 'vendor_id',  required: true%>
+  <br>
+<input type="text" hidden name="invoices" class="transaction_invoice_id" value=" ">
+
+  <br>
+  <label>Total amount</label>
+  <input type="number" id="total_blc" class="form-control" value="0.00" name="transaction_amount" readonly="readonly" >
+   <br>
+
+</div>
+
+<div class="col-xs-12">
+<button type="button" id="show_select" class="btn  btn-info pull-right" data-toggle="modal" data-target="#invoices">Add Bill</button>
+</div>
+</div>
+<div class="row">
+  <div id="divResults">
+
+    <table class="table table-hover table-striped">
+      <thead>
+        <tr>
+          <th >Bill Num</th>
+          <th >Reference</th>
+          <th >Amount</th>
+          <th >Transaction Amount</th>
+          <th >Last Paid</th>
+          <th >Total Paid</th>
+          <th >Notes</th>
+        </tr>
+      </thead>
+
+      <tbody id="tbody_empty">
+       
+      </tbody>
+      
+    </table>
+  </div>
+</div>
+<h3 id="nothing_alert">
+This vendor has No open Bills
+</h3>
+   <div class="form-actions">
+    <%= f.button :submit, 'Save', class: 'btn btn-primary' %>
+  </div>
+<% end %>

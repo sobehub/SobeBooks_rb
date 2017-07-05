@@ -1,0 +1,25 @@
+# == Schema Information
+#
+# Table name: transactioninvoices
+#
+#  id                   :integer          not null, primary key
+#  clienttransaction_id :integer
+#  invoice_id           :integer
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
+#  balance              :decimal(, )
+#  amount               :decimal(, )
+#  reference_no         :integer
+#  Cash_type            :string
+#  user_id              :integer
+#
+
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  clienttransaction_id: 
+  invoice_id: 
+
+two:
+  clienttransaction_id: 
+  invoice_id: 

@@ -1,0 +1,261 @@
+<h2 class="text-center">Vendor Summary Report</h2>
+<form action="/invoices/from_form" >
+  <div class="jumbotron" style="background-color:whitesmoke">
+    <div class="row" >
+      <div class="col-xs-3">
+        <label>Date From</label>
+        <input type="date" name="date_from" id="date_from" class="form-control">
+      </div>
+      <div class="col-xs-3">
+        <label>Date To</label>
+        <input type="date" class="form-control" name="date_to" id="date_to">
+      </div>
+      <div class="col-xs-3">
+        <button id="gen_btn" style="margin-top:26px" class="btn btn-success pull-right">Import to Excel</button>
+      </div>
+    </div>
+    <br>
+
+    <div class="row" >
+      <div class="col-xs-3">
+        <label>Select Client</label>
+        <%= select_tag "vendor_id", options_for_select(current_user.vendors.order_by_name.map{|s|[s.company_name, s.id]}),:id=>"client" , prompt: "Select Vendor", class: 'form-control' , id: 'vendor_id',  required: true%>
+      </div>
+      <div class="col-xs-3">
+        <label>Vendor Type</label>
+        <select name="vendor_type" id="vendor_type" class="form-control">
+          <option value="">Select Vendor type</option>
+          <option value="active">Active</option>
+          <option value="inactive">Inactive</option>
+          <option value="past due">Past due</option>
+        </select>
+      </div>
+
+    </div>
+    <br>
+    <input type="submit" name="" class="btn btn-default" value="search" id="sub">
+
+  </div>
+
+  <br>
+
+
+
+
+</form>
+<table class="table table-hover table-striped">
+
+  <thead>
+  <tr>
+    <th>VendorId</th>
+    <th>Name</th>
+    <th>Last Bill</th>
+    <th>Total Bills</th>
+    <th>Last Payment</th>
+
+    <th colspan="3"></th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <tr>
+
+  </tr>
+  </tbody>
+</table>
+
+<script>
+
+
+  jQuery(function($) {
+    $("#sub").click(function() {
+      $("tbody").empty();
+      total_cou=0
+      var select ="Select";
+      var vendor_id = $('select#vendor_id :selected').val();
+      var vendor_type = "";
+      if($('select#vendor_type :selected').val())
+      {
+        vendor_type= $('select#vendor_type :selected').val();
+      }
+
+      var date_from = "";
+      if($("#date_from").val())
+      {
+        date_from=$("#date_from").val();
+
+      }
+      var date_to = "";
+      if($("#date_to").val())
+      {
+        date_to= $("#date_to").val();
+      }
+
+
+
+      if(vendor_id==""){
+        $('#divResults').hide('2000');
+        $('#show_select').hide('2000');
+      } else {
+        // alert(date_from);
+        jQuery.getJSON('/vendors/summary_vendor/' +
+            vendor_id+'/'+vendor_type+'/'+date_from+'/'+date_to, function(data){
+
+          var invoices_client = "";
+          if(data){
+            if(data.totalpaid==null)
+              data.totalpaid = 0;
+            var last_paid = "";
+            if(data[0].transaction_bills)
+              last_paid = data[0].updated_at.split('T')[0]
+            else
+              last_paid = "---";
+
+            invoices_client = '<tr> <td class="invoice_num"><a href="/invoices/'+ data[0].vendor.id +'">'+ data[0].vendor.id +'</a> </td> <td class="invoice_reference"> '+ data[0].vendor.name +' </td> <td class="invoice_amount">'+last_paid+' </td><td class="invoice_lastpayment">'+ Object.keys(data).length +' </td> <td class="invoice_duedate">'+data[0].totalpaid+' </td></tr>';
+
+
+            $("tbody").append(invoices_client);
+
+          }
+        })
+      }
+      return false;
+    });
+  })
+
+
+
+  jQuery(function($) {
+    $("#gen_btn").click(function() {
+      $("tbody").empty();
+      total_cou=0
+      var select ="Select";
+      var vendor_id = $('select#vendor_id :selected').val();
+      var vendor_type = "";
+      if($('select#vendor_type :selected').val())
+      {
+        vendor_type= $('select#vendor_type :selected').val();
+      }
+
+      var date_from = "";
+      if($("#date_from").val())
+      {
+        date_from=$("#date_from").val();
+
+      }
+      var date_to = "";
+      if($("#date_to").val())
+      {
+        date_to= $("#date_to").val();
+      }
+
+
+
+      if(vendor_id==""){
+        $('#divResults').hide('2000');
+        $('#show_select').hide('2000');
+      } else {
+        // alert(date_from);
+        jQuery.getJSON('/vendors/summary_vendor/' +
+            vendor_id+'/'+vendor_type+'/'+date_from+'/'+date_to, function(data){
+
+          var invoices_client = "";
+          if(data){
+            if(data.totalpaid==null)
+              data.totalpaid = 0;
+            var last_paid = "";
+            if(data[0].transaction_bills)
+              last_paid = data[0].updated_at.split('T')[0]
+            else
+              last_paid = "---";
+            JSONToCSVConvertor(data, "summarry_report", true);
+            invoices_client = '<tr> <td class="invoice_num"><a href="/invoices/'+ data[0].vendor.id +'">'+ data[0].vendor.id +'</a> </td> <td class="invoice_reference"> '+ data[0].vendor.name +' </td> <td class="invoice_amount">'+last_paid+' </td><td class="invoice_lastpayment">'+ Object.keys(data).length +' </td> <td class="invoice_duedate">'+data[0].totalpaid+' </td></tr>';
+
+
+            $("tbody").append(invoices_client);
+
+          }
+        })
+      }
+      return false;
+    });
+  })
+
+
+
+
+
+  function JSONToCSVConvertor(JSONData, ReportTitle, ShowLabel) {
+    //If JSONData is not an object then JSON.parse will parse the JSON string in an Object
+    var arrData = typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData;
+
+    var CSV = '';
+    //Set Report title in first row or line
+
+    CSV += ReportTitle + '\r\n\n';
+
+    //This condition will generate the Label/Header
+    if (ShowLabel) {
+      var row = "";
+
+      //This loop will extract the label from 1st index of on array
+      //Now convert each value to string and comma-seprated
+      row += "Id" + ','+"Client Name"+ ','+"Last Invoice"+ ','+"Total Invoices"+ ','+"Last Cash"+ ','+"Receipt"+ ','+"Total Cash Receipts"+ ',';
+
+      row = row.slice(0, -1);
+
+      //append Label row with line break
+      CSV += row + '\r\n';
+    }
+
+    //1st loop is to extract each row
+    var row = "";
+
+    //2nd loop will extract each column and convert it in string comma-seprated
+    if(arrData[0].transaction_bills)
+      last_paid = arrData[0].updated_at.split('T')[0]
+    else
+
+      last_paid = "---";
+    row += '"' + arrData[0].id + '","' + arrData[0].vendor.name + '",'+last_paid + '",'+ arrData.length + '",'+ arrData[0].totalpaid + ',';
+
+    row.slice(0, row.length - 1);
+
+    //add a line break after each row
+    CSV += row + '\r\n';
+
+
+    if (CSV == '') {
+      alert("Invalid data");
+      return;
+    }
+
+    //Generate a file name
+    var fileName = "Vendor_";
+    //this will remove the blank-spaces from the title and replace it with an underscore
+    fileName += ReportTitle.replace(/ /g,"_");
+
+    //Initialize file format you want csv or xls
+    var uri = 'data:text/csv;charset=utf-8,' + escape(CSV);
+
+    // Now the little tricky part.
+    // you can use either>> window.open(uri);
+    // but this will not work in some browsers
+    // or you will not get the correct file extension    
+
+    //this trick will generate a temp <a /> tag
+    var link = document.createElement("a");
+    link.href = uri;
+
+    //set the visibility hidden so it will not effect on your web-layout
+    link.style = "visibility:hidden";
+    link.download = fileName + ".xlsx";
+
+    //this part will append the anchor tag and remove it after automatic click
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+
+
+</script>

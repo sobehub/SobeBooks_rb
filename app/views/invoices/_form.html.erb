@@ -1,0 +1,24 @@
+<%= simple_form_for(@invoice) do |f| %>
+  <%= f.error_notification %>
+  <div class="form-inputs col-md-6">
+    <%= f.input :reference, required: true %>
+    <%= f.input :amount, "#{number_with_precision(@invoice.amount, precision: 2)}", required: true %>
+
+    <%= f.input :notes, required: true %>
+    <%= f.input :duedate, required: true %>
+
+
+    <%= f.select_tag "invoice[client_id]",
+                     options_for_select(current_user.clients.all.order_by_name.map{|s|[s.company_name, s.id]}, @invoice.client_id),
+                     id: "client", prompt: "Select Client", class: 'form-control' %>
+    <br>
+    <%= f.select_tag "invoice[status]",
+                     options_for_select(invoice_status_list, @invoice.status),
+                     :id => "status", prompt: "Select Status", class: 'form-control', required: true %>
+    <br>
+
+    <div class="form-actions">
+      <%= f.button :submit %>
+    </div>
+  </div>
+<% end %>

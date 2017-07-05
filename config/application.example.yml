@@ -1,0 +1,51 @@
+development:
+ admin_name:
+ admin_email:
+ admin_password:
+ domain_name:
+ bucket:
+ access_key_id:
+ secret_access_key:
+
+ # Database user
+ db_username:
+ db_password:
+
+ # Email user
+ user_name:
+ password:
+
+test:
+ admin_name:
+ admin_email:
+ admin_password:
+ domain_name:
+ bucket:
+ access_key_id:
+ secret_access_key:
+
+ # Database user
+ db_username:
+ db_password:
+
+ # Email user
+ user_name:
+ password:
+
+production:
+ admin_name:
+ admin_email:
+ admin_password:
+ domain_name:
+ secret_key_base:
+ bucket:
+ access_key_id:
+ secret_access_key:
+
+ # Database user
+ db_username:
+ db_password:
+
+ # Email user
+ user_name:
+ password:

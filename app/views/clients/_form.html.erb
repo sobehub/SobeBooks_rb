@@ -1,0 +1,29 @@
+<%= simple_form_for(@client) do |f| %>
+    <%= f.error_notification %>
+
+    <div class="form-inputs col-md-6">
+      <%= f.input :name, required: true %>
+      <%= f.input :company_name, required: true %>
+
+      <label>Client Status</label>
+      <%= f.select_tag "client[status]", options_for_select(visibility_status_list,
+                                                            @client.status),:id=>"status" , class: 'form-control' %>
+      <br>
+      <label>Client Type</label>
+      <%= f.select_tag "client[setup_id]",
+                       options_for_select(current_user.setups.where(:setuptype=>'client').map{ |s|[s.typeofsetup, s.id] },
+                                          @client.setup_id),:id=>"setup_id" , prompt: "Select Client Type", class: 'form-control' %>
+      <br>
+
+      <%= f.input :email, required: true %>
+      <%= f.input :phone, required: false %>
+      <%= f.input :identifier, required: false %>
+      <%= f.input :reference, required: false %>
+      <%= f.input :notes %>
+      <br>
+
+      <div class="form-actions">
+        <%= f.button :submit, class: "btn btn-primary" %>
+      </div>
+    </div>
+<% end %>

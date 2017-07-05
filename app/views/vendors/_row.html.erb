@@ -1,0 +1,15 @@
+<tr>
+  <td><%=link_to vendor.name, vendor %></td>
+  <td><%= vendor.company_name %></td>
+  <td><%= vendor.email %></td>
+  <td><%= vendor.phone %></td>
+  <td><%= vendor.identifier %></td>
+  <!--<td><%#= vendor.reference %></td>-->
+  <td><%= vendor.status.present? ? vendor.status.capitalize : '---' %></td>
+  <td><%= vendor.setup.present? ? vendor.setup.typeofsetup : '---' %></td>
+  <td><%= vendor.bills.where(:status=>'unpaid').count %></td>
+  <td><%= number_with_precision(vendor.current_balance, precision: 2) %></td>
+
+  <td><%= link_to 'Edit', edit_vendor_path(vendor), class: "btn btn-info" %></td>
+  <td><%= link_to 'Delete', vendor, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %></td>
+</tr>

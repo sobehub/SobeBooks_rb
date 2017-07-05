@@ -1,0 +1,377 @@
+
+<style>
+  .circle-image{
+    width:80px;
+    height:80px;
+    border-radius:50%;
+    display:block;
+    background-position-y:25%
+  }
+
+</style>
+
+<div class="container ">
+  <br>
+  <br>
+  <div class="row">
+    <div class="col-xs-3">
+      <h2>INVOICE#<%=@invoice.id%></h2>
+      <p ><b>Date: </b> <span id="invoice-date-update"><%= @invoice.updated_at.to_date%></span></p>
+    </div>
+  </div>
+
+
+  <div class="row">
+    <div class="col-xs-4" style="background-color:rgb(254, 207, 115)">
+      <h3>Bill To:</h3>
+      <p id="invoice-client-name"><%= @invoice.client.present? ? @invoice.client.company_name : "---" %></p>
+    </div>
+
+    <div class="col-xs-7 text-right" >
+
+      <!-- Modal -->
+      <div id="email-modal-invoice" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title text-center">Email Invoice</h4>
+            </div>
+            <div class="modal-body">
+              <form action=<%="/invoices/downloadinvoice/#{@invoice.id}"%> >
+                <label style="float:left">Email</label>
+                <input type="email" required="true" name="emailinvoice" class="form-control">
+                <br>
+                <input style="float:left" type="submit" name="" class="btn btn-info" value="Proceed">
+              </form>
+            </div>
+            <br>
+            <br>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <br>
+      <span type="button" class="btn btn-info " data-toggle="modal" data-target="#email-modal-invoice"> Email Invoice</span>
+      <span id="invoice-edit" class="btn btn-info " data-invoice-edit-url="<%= edit_invoice_path(@invoice) %>"> Edit Invoice</span>
+      <span style="display:none" id="" class="btn btn-info new-line">New Item</span>
+    </div>
+
+  </div>
+  <br>
+
+  <div class="row">
+    <div class="col-xs-2" style="background-color:rgb(223, 223, 225);">
+      <h4>Reference</h4>
+      <p id="invoice-reference"><%=@invoice.reference%></p>
+    </div>
+
+
+    <div class="col-xs-4" style="background-color:rgb(223, 223, 225);margin-left: 3px;">
+      <h4>Due Date</h4>
+      <p id="invoice-duedate"><%= @invoice.duedate.present? ? display_formatted_date(@invoice.duedate) : '---' %></p>
+    </div>
+
+    <div class="col-xs-3" style="background-color:rgb(223, 223, 225);margin-left: 3px;">
+      <h4>Total Amount</h4>
+      <p id="invoice-amount"><%= number_with_precision(@invoice.amount, precision: 2) %></p>
+
+
+    </div>
+    <div class="col-xs-2" style="background-color:rgb(223, 223, 225);margin-left: 3px;">
+      <h4>Status</h4>
+      <p id="invoice-status"><%= @invoice.status.present? ? @invoice.status.capitalize : '---'%></p>
+    </div>
+  </div>
+
+  <br>
+  <div class="row">
+    <div class="col-xs-3" style="background-color:rgb(223, 223, 225);">
+      <h4>Last Paid</h4>
+      <p id="invoice-lastpaid"><%= @invoice.lastpayment.present? ? @invoice.lastpayment : '---' %></p>
+    </div>
+
+    <div class="col-xs-3" style="background-color:rgb(223, 223, 225);">
+      <h4>Balance</h4>
+      <p id="invoice-balance"><%= @invoice.balance.present? ? number_with_precision(@invoice.balance, precision: 2) : '---'%></p>
+    </div>
+
+    <div class="col-xs-5" style="background-color:rgb(254, 207, 115);margin-left: 8px;">
+      <h4>Total Paid</h4>
+      <p id="invoice-lastpaid"><%= @invoice.totalpaid.present? ? number_with_precision(@invoice.totalpaid, precision: 2) : '---' %></p>
+    </div>
+  </div>
+
+  <br>
+  <div class="row">
+    <div class="col-xs-11" style="background-color:rgb(223, 223, 225);width: 92.266667%;">
+      <h4>Notes</h4>
+      <p id="invoice-notes"><%= @invoice.notes %></p>
+    </div>
+  </div>
+
+  <h3 > Items </h3>
+
+  <div class="container" style="padding-bottom: 200px;">
+    <table class="table table-hover" id="line_items">
+      <thead>
+      <tr>
+        <th >Description</th>
+        <th >Quantity</th>
+        <th >Price</th>
+        <th >Total</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% sub_total = 0 %>
+      <% @invoice.line_items.each do |line_item| %>
+          <tr id="lineitem_<%= line_item.id %>">
+            <td class="description"><%= line_item.description %></td>
+            <td class="quantity"><%= line_item.quantity %></td>
+            <td class="price">
+              <%= number_with_precision(line_item.price, precision: 2) %>
+            </td>
+            <td class="total total-count">
+              <%= number_with_precision(line_item.price * line_item.quantity, precision: 2) %>
+            </td>
+            <td><span class="glyphicon glyphicon-edit edit-line-item" data-edit-url="<%= invoice_line_item_path(@invoice, line_item) %>"> </span> </td>
+            <td><%= link_to '', invoice_line_item_path(@invoice, line_item), method: :delete, data: { confirm: 'Are you sure?', remote: 'true' },class: "glyphicon glyphicon-trash destroy-line-item" %></td>
+          </tr>
+          <% sub_total += line_item.price * line_item.quantity %>
+      <% end %>
+      </tbody>
+    </table>
+    <div class="col-md-12 text-right">
+      <b>Total Amount:</b> <span id="sub-total"> <%=  number_with_precision(sub_total, precision: 2) %> </span>
+    </div>
+
+  </div>
+
+  <div id="create_lineitem_modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Add New Item</h4>
+        </div>
+        <div class="modal-body">
+          <%= simple_form_for([@invoice, @line_item],remote: true)  do |f| %>
+              <%= f.error_notification %>
+              <div class="form-inputs">
+                <%= f.input :description, required: true,input_html: {class: "desc-emp"}%>
+                <%= f.input :price, required: true ,input_html: {class: "desc-quan"}%>
+                <%= f.input :quantity ,  required: true,input_html: {class: "desc-price"} %>
+              </div>
+
+              <div class="form-actions">
+                <%= f.button :submit %>
+              </div>
+          <% end %>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div id="edit_lineitem_modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Edit Item</h4>
+        </div>
+        <div class="modal-body">
+          <form class="edit_line_item_form" id="edit_line_item_form" action="" accept-charset="UTF-8" data-remote="true" method="put"><input name="utf8" type="hidden" value="✓">
+
+            <div class="form-inputs">
+              <div class="form-group decimal required line_item_price"><label class="decimal required control-label" for="line_item_price"><abbr title="required">*</abbr> Price</label><input class="numeric decimal required form-control" required="required" aria-required="true" type="number" step="any" name="line_item[price]" id="line_item_price"></div>
+
+              <div class="form-group string required line_item_description"><label class="string required control-label" for="line_item_description"><abbr title="required">*</abbr> Description</label><input class="string required form-control" required="required" aria-required="true" type="text" name="line_item[description]" id="line_item_description"></div>
+
+              <div class="form-group integer  required line_item_quantity"><label class="integer required control-label" for="line_item_quantity"><abbr title="required">*</abbr> Quantity</label><input class="numeric invoice_update_quantity integer required form-control" required="required" aria-required="true" type="number" step="1" name="line_item[quantity]" id="line_item_quantity">
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <input type="submit" name="commit" value="Update Item" class="btn btn-primary">
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default invoice_amount_total" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div id="edit_invoice_modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Edit Item</h4>
+        </div>
+        <div class="modal-body">
+          <%= simple_form_for(@invoice,remote: true) do |f| %>
+              <%= f.error_notification %>
+              <div class="form-inputs">
+                <%= f.input :transaction_date, as: :string, required: true,
+                            input_html: { value: "#{display_formatted_date(@invoice.transaction_date)}", class: 'tdate' } %>
+
+                <%= f.input :reference, required: true %>
+
+                <%= f.input :amount, input_html: { value: "#{number_with_precision(@invoice.amount, precision: 2)}" }, :readonly => true %>
+                <%= f.input :notes, required: true %>
+                <%= f.input :duedate, as: :string, required: true,
+                            input_html: { value: "#{display_formatted_date(@invoice.duedate)}", class: 'ddate' } %>
+
+                <%= f.select_tag "invoice[client_id]",
+                                 options_for_select(current_user.clients.all.order_by_name.map{|s|[s.company_name, s.id]},
+                                                    @invoice.client_id), :id => "client" ,
+                                 prompt: "Select Client", class: 'form-control' %>
+                <br>
+                <%= f.select_tag "invoice[status]",
+                                 options_for_select(invoice_status_list, @invoice.status),
+                                 :id => "status", class: 'form-control' %>
+
+              </div>
+              <br/><br/>
+              <div class="form-actions">
+                <%= f.button :submit, 'Update Invoice', class: 'btn btn-primary' %>
+              </div>
+          <% end %>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+  <script type="text/javascript">
+
+    invoice_id =  "<%= @invoice.id %>";
+
+    $(document).on('click', '.new-line', function(event) {
+      $('.desc-emp').val('');
+      $('.desc-quan').val('');
+      $('.desc-price').val('');
+      $("#create_lineitem_modal").modal('show');
+    });
+
+    $(document).on('ajax:success', '#new_line_item', function(event, data, status, xhr) {
+      $('#create_lineitem_modal').modal('hide');
+
+      var html_code = '<tr id="lineitem_'+data.id+'"> <td class="description">'+
+          data.description +' </td> <td class="quantity"> '+ data.quantity +
+          ' </td> <td class="price">' +
+          data.price +' </td><td class="total total-count">' +
+          data.price * data.quantity +
+          ' </td> <td> <span class="glyphicon glyphicon-edit edit-line-item" data-edit-url="/invoices/'+invoice_id+'/line_items/'+data.id+'/"> </span> </td> <td> <a class="glyphicon glyphicon-trash destroy-line-item" href="/invoices/'+invoice_id+'/line_items/'+data.id+'/" data-method="delete" data-remote="true" data-confirm="Are you sure?">  </a></td> </tr>';
+
+      $("#line_items").append(html_code);
+      $("#sub-total").text( parseFloat($("#sub-total").text()) + (data.price * data.quantity) );
+
+    });
+
+    $(document).on('ajax:success', '.destroy-line-item', function(event, data, status, xhr) {
+      var subtotal = parseFloat( $('#lineitem_'+data.id+" .total").text() );
+      // $("#sub-total").text( parseFloat($("#sub-total").text()) - subtotal );
+      delete_ = parseFloat($("#sub-total").text()) - subtotal;
+      // = parseFloat($("#sub-total").text()) + (data.price * data.quantity)
+      $("#sub-total").text(delete_);
+      $("#invoice-amount").text(delete_);
+      $('#lineitem_'+data.id).remove();
+    });
+
+    $(document).on('click', '.edit-line-item', function(event) {
+      line_item_id = $(this).parent().parent().attr("id");
+      var action = $(this).attr('data-edit-url');
+
+      var price = parseFloat($(this).parent().parent().find(".price").text()).toFixed(2);
+
+      var description = $(this).parent().parent().find(".description").text();
+      var quantity = $(this).parent().parent().find(".quantity").text();
+
+      $("#edit_lineitem_modal form").attr('action', action);
+
+      $("#edit_lineitem_modal .line_item_price input").val(price);
+      $("#edit_lineitem_modal .line_item_description input").val(description);
+      $("#edit_lineitem_modal .line_item_quantity input").val(quantity);
+
+      $("#edit_lineitem_modal").modal('show');
+    });
+
+    // successful update
+    $(document).on('ajax:success', '#edit_line_item_form', function(event, data, status, xhr) {
+      $("#edit_lineitem_modal").modal('hide');
+
+      $("#"+ line_item_id + " .total").removeClass("total-count");
+      var total = 0;
+      $(".total-count").each(function(i, obj) {
+        total += parseFloat( $(obj).text() );
+      });
+      $("#sub-total").text( total );
+
+      $("#"+ line_item_id +" .price").text(parseFloat(data.price).toFixed(2));
+      $("#"+ line_item_id +" .description").text(data.description);
+      $("#"+ line_item_id +" .quantity").text(data.quantity);
+      $("#"+ line_item_id +" .total").text(parseFloat(data.price * data.quantity).toFixed(2));
+      $("#"+ line_item_id +" .total").addClass("total-count");
+
+      total_ = parseFloat($("#sub-total").text()) + (data.price * data.quantity);
+
+      $("#sub-total").text( parseFloat(total_).toFixed(2) );
+      $("#invoice-amount").text(parseFloat(total_).toFixed(2));
+
+    });
+
+
+    $(document).on('click', '#invoice-edit', function(event) {
+      $("#edit_invoice_modal").modal('show');
+    });
+
+
+    $(document).on('ajax:success', '.edit_invoice', function(event, data, status, xhr) {
+      $("#edit_invoice_modal").modal('hide');
+      var balance = 0.00;
+      if(data.balance === null) {
+        balance = "---"
+      }
+      else {
+        balance = parseFloat(data.balance).toFixed(2)
+      }
+
+      $("#invoice-date-update").text(data.updated_at.to_date)
+      $("#invoice-reference").text(data.reference);
+      $("#invoice-balance").text(balance);
+      $("#invoice-lastpaid").text(parseFloat(data.lastpaid).toFixed(2));
+      $("#invoice-duedate").text(data.duedate);
+      $("#invoice-amount").text(parseFloat(data.amount).toFixed(2));
+      $("#invoice-notes").text(data.notes);
+      $("#invoice-status").text(data.status);
+      $('#invoice-status').css('textTransform', 'capitalize');
+
+      $("#invoice-client-name").text(data.client.name);
+    });
+
+  </script>

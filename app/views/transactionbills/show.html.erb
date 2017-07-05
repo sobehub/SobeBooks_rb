@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Bill:</strong>
+  <%= @transactionbill.bill %>
+</p>
+
+<p>
+  <strong>Vendortransaction:</strong>
+  <%= @transactionbill.vendortransaction %>
+</p>
+
+<p>
+  <strong>Amount:</strong>
+  <%= @transactionbill.amount %>
+</p>
+
+<p>
+  <strong>Balance:</strong>
+  <%= @transactionbill.balance %>
+</p>
+
+<%= link_to 'Edit', edit_transactionbill_path(@transactionbill) %> |
+<%= link_to 'Back', transactionbills_path %>

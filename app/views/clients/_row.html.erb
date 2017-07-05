@@ -1,0 +1,16 @@
+<tr>
+  <td><%= link_to client.name,client %></td>
+  <td><%= client.company_name %></td>
+  <td><%= client.email %></td>
+  <td><%= client.phone %></td>
+  <td><%= client.identifier %></td>
+  <!--<td><%#= client.reference %></td>-->
+  <td><%= client.status.present? ? client.status.capitalize : '--' %></td>
+  <td><%= client.setup.present? ? client.setup.typeofsetup : '---' %></td>
+
+  <td><%= client.invoices.where(:status=>'unpaid').count %></td>
+  <td><%= number_with_precision(client.current_balance, precision: 2) %></td>
+
+  <td><%= link_to 'Edit', edit_client_path(client) , class: "btn btn-info" %></td>
+  <td><%= link_to 'Delete', client, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %></td>
+</tr>

@@ -1,0 +1,48 @@
+
+<div id="search-div">
+	<div>
+		<h1>
+      SOBE Books
+		</h1>
+	<div/>
+	
+     <div>
+		<form id="search-form" action="/search/results" method="get">
+			<input id="search-q" class="form-control searching-textfield" name="q" type="text">
+			<input id="search-b" type="submit" class="btn btn-primary" value="Search">
+			<br>
+		</form>
+	</div>
+	<div id="counts-all">
+	
+		<div id="clients-count">
+			<div class="fa fa-user fa-3x individuaL-counts"> </div>
+			<div class="individuaL-counts" > <%= link_to ("(" + @clients_count.to_s + ") Clients"), clients_path %></div>
+			<div class="individuaL-counts" > $<%= number_with_precision(balance_due_from_clients, precision: 2, delimiter: ',') %> Due</div>
+		</div>
+		<div id="vendors-count">
+			<div class="fa fa-user fa-3x individuaL-counts"> </div>
+			<div class="individuaL-counts" > <%= link_to ("(" + @vendors_count.to_s + ") Vendors"), vendors_path %></div>
+      <div class="individuaL-counts" > $<%= number_with_precision(owed_to_vendors, precision: 2, delimiter: ',') %> Owed</div>
+		</div>
+    <div id="vendors-count">
+      <div class="fa fa-university fa-3x individuaL-counts"> </div>
+      <div class="individuaL-counts" > <%=  link_to ("(" + @banks_count.to_s + ") Banks"), 'javascript:' %></div>
+      <div class="individuaL-counts" > $<%= number_with_precision(bank_balance, precision: 2, delimiter: ',') %> Balance</div>
+    </div>
+		<div id="invoices-count">
+			<div class="fa fa-file-pdf-o fa-3x individuaL-counts"> </div>
+			<div class="individuaL-counts" > <%= link_to ("(" + @invoices_count.to_s + ") Invoices"), invoices_path %></div>
+      <div class="individuaL-counts" > &nbsp; </div>
+      </div>
+		<div id="invoices-count">
+			<div class="fa fa-file-pdf-o fa-3x individuaL-counts"> </div>
+			<div class="individuaL-counts" > <%= link_to ("(" + @bills_count.to_s + ") Bills"), bills_path %></div>
+      <div class="individuaL-counts" > &nbsp; </div>
+		</div>
+
+		
+	</div>
+
+</div>
+</div>

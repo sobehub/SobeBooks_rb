@@ -1,0 +1,24 @@
+# == Schema Information
+#
+# Table name: setups
+#
+#  id          :integer          not null, primary key
+#  description :text
+#  user_id     :integer
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#  setuptype   :string
+#  typeofsetup :string
+#
+
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  type: 
+  description: MyText
+  user_id: 
+
+two:
+  type: 
+  description: MyText
+  user_id: 

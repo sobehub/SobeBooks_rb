@@ -1,0 +1,65 @@
+
+<% if user_signed_in? %>
+
+    <li><%= link_to 'SOBE Books', '/search/index' %></li>
+    <li><%= link_to 'Clients', clients_path %></li>
+    <li><%= link_to 'Vendors', vendors_path %></li>
+    <li><%= link_to 'Invoices', invoices_path %></li>
+    <li><%= link_to 'Bills', bills_path %></li>
+    <li class="dropdown">
+      <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">Transaction
+        <span class="caret"></span></a>
+      <ul class="dropdown-menu">
+        <li><a href="/clienttransactions">Cash From client</a></li>
+        <li><a href="/vendortransactions">Payment to Vendor</a></li>
+      </ul>
+    </li>
+    <li class="dropdown">
+      <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">Reports
+        <span class="caret"></span></a>
+      <ul class="dropdown-menu">
+        <li><a href="/reports/customersummary">Client Summary</a></li>
+        <li><a href="/reports/vendorsummary">Vendor Summary</a></li>
+        <li><a href="/reports/clientdetail">Client Detail</a></li>
+        <li><a href="/reports/vendordetail">Vendor Detail</a></li>
+        <li><a href="/reports/bankbalance">Bank Balance</a></li>
+        <li><a href="/reports/paymentdetail">Payment Detail</a></li>
+        <li><a href="/reports/cashdetail">Cash Detail</a></li>
+        <!--       <li><a href="/reports/paymentsummary">Payment Summary</a></li>
+              <li><a href="/reports/cashsummary">Cash Summary</a></li> -->
+      </ul>
+    </li>
+
+    <li class="col-xs-2 col-sm-2 col-md-2 col-lg-3  margin-search-form" style="margin-top:4px">
+      <form id="search-form" action="/search/results" method="get" role="search">
+        <div class="input-group">
+          <input type="text" class="form-control" name="q" placeholder="Search"  value="<%= @search%>" id="search-q">
+          <div class="input-group-btn">
+            <button class="btn btn-default" id="search-b" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+          </div>
+        </div>
+
+      </form>
+    </li>
+
+    <li class="dropdown  " style="margin-top: -6px;">
+      <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
+
+        <%= current_user.name%>
+        <%= image_tag('icon-user-default.png' , height: '32', width: '32',style: 'display:inline-block') %>
+        <span class="caret" style="display:inline-block"></span>
+      </a>
+      <ul class="dropdown-menu">
+        <li><%= link_to 'Setup', setups_path %></li>
+        <li><%= link_to 'Notes', get__user_notes_path %></li>
+        <li><%= link_to 'Sign out', destroy_user_session_path, :method=>'delete' %></li>
+      </ul>
+    </li>
+
+<% else %>
+    <li><%= link_to 'Sign in', new_user_session_path %></li>
+    <li><%= link_to 'Sign up', new_user_registration_path %></li>
+<% end %>
+<% if user_signed_in? %>
+    <!-- <li><%= link_to 'Users', users_path %></li> -->
+<% end %>

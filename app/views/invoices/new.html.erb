@@ -1,0 +1,1273 @@
+<head>
+  <style>
+
+
+    .background,
+    body,
+    html {
+      filter: progid: DXImageTransform.Microsoft.gradient(startColorstr='#eeeeee', endColorstr='#dddddd', GradientType=0)
+    }
+
+    .feedback .expandingText,
+    .invoice .contact .value .expandingText {
+      min-height: 60px
+    }
+
+    body,
+    html {
+      margin: 0;
+      padding: 0;
+      background: #eee;
+      background: -moz-linear-gradient(top, #eee 0, #eee 71%, #ddd 100%);
+      background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #eee), color-stop(71%, #eee), color-stop(100%, #ddd));
+      background: -webkit-linear-gradient(top, #eee 0, #eee 71%, #ddd 100%);
+      background: -o-linear-gradient(top, #eee 0, #eee 71%, #ddd 100%);
+      background: -ms-linear-gradient(top, #eee 0, #eee 71%, #ddd 100%);
+      background: linear-gradient(to bottom, #eee 0, #eee 71%, #ddd 100%)
+    }
+
+
+    a:hover:not(.btn) {
+      color: #0466bd;
+      text-decoration: none
+    }
+
+    #theForm {
+      padding: 0!important;
+      margin: 0!important
+    }
+
+    .btn {
+      border-radius: 3px;
+      text-rendering: optimizelegibility;
+    }
+
+
+    .modal-backdrop.in{
+      opacity: 0 !important;
+    }
+    .modal-backdrop
+    {
+      position: absolute !important;
+    }
+
+
+    .invoice-holder {
+      margin: 0;
+      /*padding: 0 225px 0 0;*/
+      position: relative
+    }
+
+    .invoice-holder .papers {
+      float: right;
+      width: 100%
+    }
+
+    .invoice-holder .invoice-controls.desktop {
+      float: right;
+      margin-right: -225px;
+      width: 210px;
+      position: relative
+    }
+
+    .invoice-holder .invoice-controls.desktop>.affix {
+      top: 25px
+    }
+
+    .invoice-holder .invoice-controls.desktop>.affix-el {
+      width: 210px;
+      padding: 15px 0 15px 15px
+    }
+
+    .invoice-holder .invoice-controls.mobile,
+    .invoice-holder .mobile-btns {
+      display: none
+    }
+
+    .invoice-holder .invoice-controls .btns {
+      clear: both
+    }
+
+    .invoice-holder .invoice-controls .btns .btn-holder {
+      padding: 0;
+      margin: 0 0 10px
+    }
+
+    .invoice-holder .invoice-controls .section {
+      text-align: left
+    }
+
+    .invoice-holder .invoice-controls .section a,
+    .invoice-holder .invoice-controls .section a:active,
+    .invoice-holder .invoice-controls .section a:visited {
+      display: block;
+      width: 100%;
+      text-shadow: 0 0 2px #fff
+    }
+
+    .invoice-holder .invoice-controls .section a:hover {
+      color: #0466bd
+    }
+
+    .invoice-holder .invoice-controls .selected-currency {
+      color: #555;
+      margin: 15px 0 0;
+      padding: 0 0 0 15px;
+      font-size: 1.1em
+    }
+
+    .invoice-holder .invoice-controls .selected-currency .title {
+      color: #999
+    }
+
+    .invoice-holder .invoice-controls .selected-currency a {
+      color: inherit
+    }
+
+    .invoice-holder .invoice-controls .selected-currency a .edit-icon {
+      visibility: hidden
+    }
+
+    .invoice-holder .invoice-controls .selected-currency a:hover {
+      color: #0466bd
+    }
+
+    .invoice-holder .invoice-controls .selected-currency a:hover .edit-icon {
+      visibility: visible
+    }
+
+    .invoice-holder .invoice-controls .save-template {
+      margin: 10px 0;
+      padding: 0 15px;
+      clear: both
+    }
+
+    .invoice-holder .invoice-controls .save-template a {
+      padding: 6px 0;
+      line-height: 20px
+    }
+
+    .invoice-holder .invoice-controls .save-template .using-default {
+      color: #999;
+      font-size: 13px;
+      padding: 6px 0;
+      line-height: 20px
+    }
+
+    .invoice-holder .invoice-controls .my-invoices-btn {
+      margin: 15px 0 10px;
+      padding: 10px 0 0;
+      clear: both;
+      font-size: 1.2em;
+      border-top: 1px solid #ddd
+    }
+
+    .invoice-holder .invoice-controls .my-invoices-btn a .badge {
+      font-size: 14px
+    }
+
+    .my-invoices-btn a {
+      padding: 6px 15px;
+      border-radius: 4px;
+      color: #555
+    }
+
+    .my-invoices-btn a .badge {
+      background: #c14543;
+      text-shadow: none
+    }
+
+    .my-invoices-btn a:hover {
+      background: #4b94d9;
+      color: #fff!important;
+      text-shadow: none!important;
+      text-decoration: none
+    }
+
+    .my-invoices-btn a:hover .badge {
+      background: #fff;
+      color: #4b94d9
+    }
+
+    .invoice {
+      margin: 0 -15px 0 0
+    }
+
+    .invoice .two-col {
+      clear: both;
+      margin: 0 0 10px;
+      width: 100%
+    }
+
+    .invoice .two-col .col {
+      float: left;
+      width: 50%;
+      padding: 0 34px 0 0
+    }
+
+    .invoice .two-col .col-offset {
+      margin-left: 50%
+    }
+
+
+    .invoice .field {
+      color: #777;
+      font-size: 1em;
+      text-align: right;
+      display: inline-block;
+      height: 26px;
+      padding: 0 5px;
+      line-height: 26px;
+      box-shadow: none
+    }
+
+    .invoice .field.bordered {
+      background: #353940;
+      border-radius: 4px
+    }
+
+    .invoice .field.bordered .input-label {
+      color: #fff
+    }
+
+    .invoice .logo {
+      text-align: left;
+      position: relative;
+      width: 200px;
+      display: table-cell;
+      vertical-align: middle;
+      overflow: hidden
+    }
+
+    .invoice .logo .placeholder {
+      width: 100%;
+      height: 130px;
+      background: #f5f5f5;
+      border-radius: 4px;
+      text-align: center;
+      padding: 50px 0 0;
+      border: 1px solid rgba(0, 0, 0, .1)
+    }
+
+    .invoice .logo .placeholder .main {
+      font-size: 1.2em;
+      color: #777
+    }
+
+    .invoice .logo .placeholder .secondary {
+      color: #aaa
+    }
+
+    .invoice .logo img {
+      border-radius: 4px;
+      max-width: 200px;
+      max-height: 150px;
+      overflow: hidden
+    }
+
+    .invoice .logo input[type=file] {
+      cursor: pointer!important;
+      width: 100%;
+      height: 20px;
+      left: 0;
+      opacity: 0;
+      position: absolute;
+      padding: 0;
+      line-height: 100%
+    }
+
+
+
+    .required {
+      color: black !important;
+    }
+
+    label{
+      font-weight: normal !important;
+    }
+
+    .help h3 {
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 15px;
+      margin-bottom: 20px
+    }
+
+
+
+
+    .currencies-list {
+      margin: 0 -15px -15px;
+      border-radius: 0 0 4px 4px;
+      max-height: 287px;
+      overflow-y: scroll
+    }
+
+    .currencies-list .empty {
+      margin: 15px 0;
+      padding: 0 15px
+    }
+
+    .currency-symbol,
+    .negative-sign {
+      margin-right: 2px
+    }
+
+    .currencies-list .currency {
+      display: block;
+      outline: 0;
+      height: 36px;
+      position: relative;
+      border-bottom: 1px solid #ccc;
+      padding: 0 85px 0 5px;
+      text-decoration: none
+    }
+
+    .currencies-list .currency .title {
+      height: 36px;
+      line-height: 36px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      padding: 0 10px;
+      font-size: 13px;
+      color: #555
+    }
+
+    .currencies-list .currency .symbol {
+      height: 36px;
+      line-height: 36px;
+      position: absolute;
+      right: 30px;
+      top: 0;
+      width: 55px;
+      text-align: center;
+      font-size: 1em;
+      font-weight: 200;
+      color: #999
+    }
+
+    .currencies-list .currency .arrow {
+      position: absolute;
+      right: 15px;
+      top: 0;
+      height: 36px;
+      line-height: 36px;
+      color: #ccc
+    }
+
+    .currencies-list .currency .arrow:before {
+      content: "\f125"
+    }
+
+    .currencies-list .currency:focus,
+    .currencies-list .currency:hover {
+      cursor: pointer;
+      background: #eee
+    }
+
+    .currencies-list .currency:focus .arrow,
+    .currencies-list .currency:hover .arrow {
+      color: #999
+    }
+
+    .currencies-list .currency:last-child {
+      border-bottom: none
+    }
+
+    .container{
+      z-index:0 !important;
+    }
+
+    .currency-amount {
+      line-height: 1
+    }
+
+    .input-group .form-control
+    {
+      z-index: 0 !important;
+    }
+    .currency-symbol {
+      font-size: .95em
+    }
+
+    .currency-decimal {
+      display: inline-block;
+      overflow: hidden;
+      width: 0;
+      height: 0
+    }
+
+    .currency-fraction {
+      font-size: .8em;
+      vertical-align: text-top;
+      font-weight: 400;
+      margin-left: .2em
+    }
+
+    input[type=number] {
+      -moz-appearance: textfield
+    }
+
+    body,
+    html {
+      margin: 0;
+      padding: 0;
+      background: #eee;
+      background: -moz-linear-gradient(top, #eee 0, #eee 71%, #ddd 100%);
+      background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #eee), color-stop(71%, #eee), color-stop(100%, #ddd));
+      background: -webkit-linear-gradient(top, #eee 0, #eee 71%, #ddd 100%);
+      background: -o-linear-gradient(top, #eee 0, #eee 71%, #ddd 100%);
+      background: -ms-linear-gradient(top, #eee 0, #eee 71%, #ddd 100%);
+      background: linear-gradient(to bottom, #eee 0, #eee 71%, #ddd 100%)
+    }
+
+
+
+    .background {
+      z-index: 0;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      position: fixed;
+      background: #eee;
+      background: -moz-linear-gradient(top, #eee 0, #eee 71%, #ddd 100%);
+      background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #eee), color-stop(71%, #eee), color-stop(100%, #ddd));
+      background: -webkit-linear-gradient(top, #eee 0, #eee 71%, #ddd 100%);
+      background: -o-linear-gradient(top, #eee 0, #eee 71%, #ddd 100%);
+      background: -ms-linear-gradient(top, #eee 0, #eee 71%, #ddd 100%);
+      background: linear-gradient(to bottom, #eee 0, #eee 71%, #ddd 100%)
+    }
+
+
+
+
+    .papers {
+      padding: 20px;
+      background: #fff;
+      border: 1px solid #ccc;
+      -webkit-box-shadow: 1px 1px 0 rgba(0, 0, 0, .1), 3px 3px 0 #fff, 4px 4px 0 rgba(0, 0, 0, .125), 6px 6px 0 #fff, 7px 7px 0 rgba(0, 0, 0, .15);
+      -moz-box-shadow: 1px 1px 0 rgba(0, 0, 0, .1), 3px 3px 0 #fff, 4px 4px 0 rgba(0, 0, 0, .125), 6px 6px 0 #fff, 7px 7px 0 rgba(0, 0, 0, .15);
+      box-shadow: 1px 1px 0 rgba(0, 0, 0, .1), 3px 3px 0 #fff, 4px 4px 0 rgba(0, 0, 0, .125), 6px 6px 0 #fff, 7px 7px 0 rgba(0, 0, 0, .15)
+    }
+
+
+
+    .invoice-holder {
+      margin: 0;
+      /*padding: 0 225px 0 0;*/
+      position: relative
+    }
+
+    .invoice-holder .papers {
+      float: right;
+      width: 100%
+    }
+
+    .invoice-holder .invoice-controls.desktop {
+      float: right;
+      margin-right: -225px;
+      width: 210px;
+      position: relative
+    }
+
+    .invoice-holder .invoice-controls.desktop>.affix {
+      top: 25px
+    }
+
+    .invoice-holder .invoice-controls.desktop>.affix-el {
+      width: 210px;
+      padding: 15px 0 15px 15px
+    }
+
+    .invoice-holder .invoice-controls.mobile,
+    .invoice-holder .mobile-btns {
+      display: none
+    }
+
+    .invoice-holder .invoice-controls .btns {
+      clear: both
+    }
+
+    .invoice-holder .invoice-controls .btns .btn-holder {
+      padding: 0;
+      margin: 0 0 10px
+    }
+
+    .invoice-holder .invoice-controls .section {
+      text-align: left
+    }
+
+    .invoice-holder .invoice-controls .section a,
+    .invoice-holder .invoice-controls .section a:active,
+    .invoice-holder .invoice-controls .section a:visited {
+      display: block;
+      width: 100%;
+      text-shadow: 0 0 2px #fff
+    }
+
+    .invoice-holder .invoice-controls .section a:hover {
+      color: #0466bd
+    }
+
+    .invoice-holder .invoice-controls .selected-currency {
+      color: #555;
+      margin: 15px 0 0;
+      padding: 0 0 0 15px;
+      font-size: 1.1em
+    }
+
+    .invoice-holder .invoice-controls .selected-currency .title {
+      color: #999
+    }
+
+    .invoice-holder .invoice-controls .selected-currency a {
+      color: inherit
+    }
+
+    .invoice-holder .invoice-controls .selected-currency a .edit-icon {
+      visibility: hidden
+    }
+
+    .invoice-holder .invoice-controls .selected-currency a:hover {
+      color: #0466bd
+    }
+
+    .invoice-holder .invoice-controls .selected-currency a:hover .edit-icon {
+      visibility: visible
+    }
+
+    .invoice-holder .invoice-controls .save-template {
+      margin: 10px 0;
+      padding: 0 15px;
+      clear: both
+    }
+
+    .invoice-holder .invoice-controls .save-template a {
+      padding: 6px 0;
+      line-height: 20px
+    }
+
+    .invoice-holder .invoice-controls .save-template .using-default {
+      color: #999;
+      font-size: 13px;
+      padding: 6px 0;
+      line-height: 20px
+    }
+
+    .invoice-holder .invoice-controls .my-invoices-btn {
+      margin: 15px 0 10px;
+      padding: 10px 0 0;
+      clear: both;
+      font-size: 1.2em;
+      border-top: 1px solid #ddd
+    }
+
+    .invoice-holder .invoice-controls .my-invoices-btn a .badge {
+      font-size: 14px
+    }
+
+    .my-invoices-btn a {
+      padding: 6px 15px;
+      border-radius: 4px;
+      color: #555
+    }
+
+    .my-invoices-btn a .badge {
+      background: #c14543;
+      text-shadow: none
+    }
+
+    .my-invoices-btn a:hover {
+      background: #4b94d9;
+      color: #fff!important;
+      text-shadow: none!important;
+      text-decoration: none
+    }
+
+    .my-invoices-btn a:hover .badge {
+      background: #fff;
+      color: #4b94d9
+    }
+
+    .invoice {
+      margin: 0 -15px 0 0
+    }
+
+    .invoice .two-col {
+      clear: both;
+      margin: 0 0 10px;
+      width: 100%
+    }
+
+    .invoice .two-col .col {
+      float: left;
+      width: 50%;
+      padding: 0 34px 0 0
+    }
+
+    .invoice .two-col .col-offset {
+      margin-left: 50%
+    }
+
+    .invoice .input-label {
+      padding-top: 0;
+      padding-bottom: 0;
+      color: #777;
+      background: 0 0;
+      border-color: transparent;
+      border-radius: 4px!important
+    }
+
+    .invoice .input-label:hover {
+      border-color: rgba(0, 0, 0, .1);
+      background-color: rgba(255, 255, 255, .05);
+      cursor: pointer
+    }
+
+    .invoice .input-label:focus {
+      cursor: text;
+      box-shadow: none;
+      border-color: #ccc;
+      background-color: rgba(255, 255, 255, .1)
+    }
+
+    .invoice .input-group.addon-input {
+      float: right;
+      margin: 1px 0;
+      clear: both;
+      position: relative
+    }
+
+    .invoice .input-group.addon-input .input-label {
+      text-align: right
+    }
+
+    .invoice .input-group.addon-input .delete {
+      position: absolute;
+      right: 0;
+      top: 0;
+      visibility: hidden
+    }
+
+    .invoice .input-group.addon-input .delete .btn {
+      width: 38px;
+      height: 38px;
+      line-height: 38px;
+      padding: 0;
+      color: #999
+    }
+
+    .invoice .input-group.addon-input .delete .btn:focus,
+    .invoice .input-group.addon-input .delete .btn:hover {
+      color: #0466bd
+    }
+
+    .invoice .input-group.addon-input .field {
+      line-height: 34px;
+      padding-right: 10px
+    }
+
+    .invoice .input-group.addon-input>.input-group-addon {
+      padding: 0 1px 0 5px;
+      background: 0;
+      border: 0;
+      width: 150px;
+      text-align: left;
+      line-height: inherit
+    }
+
+    .invoice .input-group.addon-input>.input-group-addon>.form-control {
+      border-radius: 4px
+    }
+
+    .invoice .input-group.addon-input>.input-group-addon.value {
+      padding: 5px 11px
+    }
+
+    .invoice .input-group.addon-input>.input-group-addon.deleteable {
+      padding-right: 45px;
+      width: 195px
+    }
+
+    .invoice .input-group.addon-input:hover .delete {
+      visibility: visible
+    }
+
+    .invoice .input-group.addon-input.highlight {
+      font-weight: 700;
+      background: #f5f5f5;
+      border-radius: 4px;
+      color: #555;
+      padding: 5px 0 5px 15px
+    }
+
+    .invoice .input-group.addon-input.highlight>.field {
+      color: inherit
+    }
+
+    .invoice .input-group.addon-input.highlight>.value {
+      font-size: inherit;
+      font-weight: inherit
+    }
+
+    .invoice .field {
+      color: #777;
+      font-size: 1em;
+      text-align: right;
+      display: inline-block;
+      height: 26px;
+      padding: 0 5px;
+      line-height: 26px;
+      box-shadow: none
+    }
+
+    .invoice .field.bordered {
+      background: #353940;
+      border-radius: 4px
+    }
+
+    .invoice .field.bordered .input-label {
+      color: #fff
+    }
+
+    .invoice .logo {
+      text-align: left;
+      position: relative;
+      width: 200px;
+      display: table-cell;
+      vertical-align: middle;
+      overflow: hidden
+    }
+
+    .invoice .logo .placeholder {
+      width: 100%;
+      height: 130px;
+      background: #f5f5f5;
+      border-radius: 4px;
+      text-align: center;
+      padding: 50px 0 0;
+      border: 1px solid rgba(0, 0, 0, .1)
+    }
+
+    .invoice .logo .placeholder .main {
+      font-size: 1.2em;
+      color: #777
+    }
+
+    .invoice .logo .placeholder .secondary {
+      color: #aaa
+    }
+
+    .invoice .logo img {
+      border-radius: 4px;
+      max-width: 200px;
+      max-height: 150px;
+      overflow: hidden
+    }
+
+    .invoice .logo input[type=file] {
+      cursor: pointer!important;
+      width: 100%;
+      height: 20px;
+      left: 0;
+      opacity: 0;
+      position: absolute;
+      padding: 0;
+      line-height: 100%
+    }
+
+    .invoice .logo .remove-logo {
+      position: absolute;
+      display: block;
+      top: 5px;
+      left: 5px;
+      padding: 0 5px;
+      text-align: center;
+      border-radius: 3px;
+      color: #fff;
+      background: #3a3a3a;
+      box-shadow: none;
+      border: none
+    }
+
+    .invoice .contact.from .field,
+    .invoice .logo-not-supported {
+      display: none
+    }
+
+    .invoice .logo .remove-logo:focus,
+    .invoice .logo .remove-logo:hover {
+      text-decoration: none;
+      background: #4b94d9
+    }
+
+    .invoice .logo .file-1 {
+      top: 0
+    }
+
+    .invoice .logo .file-2 {
+      top: 20px
+    }
+
+    .invoice .logo .file-3 {
+      top: 40px
+    }
+
+    .invoice .logo .file-4 {
+      top: 60px
+    }
+
+    .invoice .logo .file-5 {
+      top: 80px
+    }
+
+    .invoice .logo .file-6 {
+      top: 100px
+    }
+
+    .invoice .logo .file-7 {
+      top: 120px
+    }
+
+    .invoice .logo .file-8 {
+      top: 140px
+    }
+
+    .invoice .logo:hover .placeholder {
+      background: #eee
+    }
+
+    .invoice .contact {
+      margin: 15px 0 0;
+      max-width: 275px
+    }
+
+    .invoice .contact .field {
+      text-align: left;
+      padding: 0;
+      height: 36px
+    }
+
+    .invoice .contact .value {
+      text-align: left;
+      padding-top: 0
+    }
+
+    .invoice .title,
+    .invoice .title .subtitle .form-control {
+      text-align: right
+    }
+
+    .invoice .title {
+      margin: 0 30px 45px 0;
+      float: right;
+      max-width: 45%
+    }
+
+    .invoice .title .input-label {
+      margin: 15px 0 10px;
+      padding: 0 15px;
+      font-size: 2.75em;
+      font-weight: 200;
+      color: #353940;
+      text-align: right;
+      height: auto
+    }
+
+    .invoice .title .subtitle {
+      margin-right: 5px;
+      max-width: 170px;
+      float: right
+    }
+
+    .invoice .items-holder {
+      margin: 30px 0
+    }
+
+    .invoice .items-holder .items-table-header {
+      padding-right: 352px;
+      padding-bottom: 2px
+    }
+
+    .invoice .items-holder .items-table-header>div .field {
+      width: 100%;
+      text-align: left;
+      display: block;
+      border-radius: 0;
+      padding: 1px 0;
+      height: auto;
+      border-width: 0
+    }
+
+    .invoice .items-holder .items-table-header>div .field .input-label {
+      height: 26px
+    }
+
+    .invoice .items-holder .items-table-header>div .field .input-label:focus,
+    .invoice .items-holder .items-table-header>div .field .input-label:hover {
+      border-color: transparent
+    }
+
+    .invoice .items-holder .items-table-header .amount,
+    .invoice .items-holder .items-table-header .delete,
+    .invoice .items-holder .items-table-header .quantity,
+    .invoice .items-holder .items-table-header .unit_cost {
+      white-space: nowrap;
+      float: right
+    }
+
+    .invoice .items-holder .items-table-header .name .field.bordered {
+      border-radius: 4px 0 0 4px
+    }
+
+    .invoice .items-holder .items-table-header .quantity {
+      width: 92px;
+      margin-right: -92px
+    }
+
+    .invoice .items-holder .items-table-header .unit_cost {
+      width: 122px;
+      margin-right: -214px
+    }
+
+    .invoice .items-holder .items-table-header .amount {
+      width: 102px;
+      margin-right: -316px
+    }
+
+    .invoice .items-holder .items-table-header .amount .field.bordered {
+      border-radius: 0 4px 4px 0
+    }
+
+    .invoice .items-holder .items-table .item-row .main-row {
+      padding-right: 352px
+    }
+
+    .invoice .items-holder .items-table .item-row .main-row>div {
+      white-space: nowrap;
+      padding: 1px
+    }
+
+    .invoice .items-holder .items-table .item-row .main-row .amount,
+    .invoice .items-holder .items-table .item-row .main-row .delete,
+    .invoice .items-holder .items-table .item-row .main-row .quantity,
+    .invoice .items-holder .items-table .item-row .main-row .unit_cost {
+      white-space: nowrap;
+      float: right
+    }
+
+    .invoice .items-holder .items-table .item-row .main-row .quantity {
+      width: 90px;
+      margin-right: -92px
+    }
+
+    .invoice .items-holder .items-table .item-row .main-row .unit_cost {
+      width: 120px;
+      margin-right: -214px
+    }
+
+    .invoice .items-holder .items-table .item-row .main-row .amount {
+      width: 100px;
+      margin-right: -316px
+    }
+
+    .invoice .items-holder .items-table .item-row .main-row .value {
+      padding: 10px 6px
+    }
+
+    .invoice .items-holder .items-table .item-row .main-row .delete {
+      width: 34px;
+      text-align: center;
+      line-height: 40px;
+      margin-right: -348px;
+      visibility: hidden
+    }
+
+    .invoice .items-holder .items-table .item-row .main-row .delete .delete-row {
+      color: #999;
+      border: none;
+      box-shadow: none;
+      background: 0 0;
+      padding: 0;
+      font-size: 14px
+    }
+
+    .papers {
+      padding-bottom: 200px;
+    }
+  </style>
+  <script>
+    $(document).ready(function(){
+      $(".line_item_add").click(function () {
+        $(".append_item").append('<div class="item-row"> <div class="main-row"> <div class="delete"></div><div class="amount value "> <input style="margin-top:-8px;" class="item-calc form-control final_amount" type="number" step="any" readonly="readonly" value="0.00"/> </div><div class="unit_cost"> <div class="input-group"> <span class="input-group-addon currency-sign">$</span> <input class=" form-control item_rate" type="number" step="any" autocomplete="off" min="0" name="rate[]" onkeyup="updateCalc();"/> </div></div><div class="quantity"> <input type="number" step="any" class="item-calc form-control item_quan" autocomplete="off" min="0" name="quantity[]" onkeyup="updateCalc();"/> </div><div class="name"> <textarea class="item-calc form-control" rows="1" name="desc[]" placeholder="Description of item/service..."></textarea> </div></div></div>');
+      });
+    });
+
+    function updateCalc()
+    {
+      var sum = 0.00;
+      $(".main-row").each(function(){
+        var q = Number($(this).find(".item_quan").val());
+        var r = Number($(this).find(".item_rate").val());
+        $(this).find(".final_amount").val((q*r).toFixed(2));
+        sum += q*r;
+      });
+
+      $(".subtotal").val(sum.toFixed(2));
+    }
+  </script>
+
+</head>
+<div id="fb-root"></div>
+<div class="background"></div>
+
+<div class="row">
+  <div class="col-md-2"></div>
+
+  <div id="static" class="invoice-holder clearfix col-md-8">
+    <%= simple_form_for(@invoice) do |f| %>
+        <%= f.error_notification %>
+        <div class="mobile-btns row visible-xs" style="display:none">
+          <div class="col-xs-6">
+            <button type="submit" class="btn btn-primary btn-block">
+              Download Invoice
+            </button>
+          </div>
+        </div>
+
+        <div class="invoice-controls desktop" style="display:none">
+          <div class="btns clearfix">
+            <p>
+              <button type="submit" class="btn btn-primary btn-lg btn-block">
+                Download Invoice
+              </button>
+            </p>
+          </div>
+
+          <div class="panel panel-default">
+            <div class="panel-heading">Currency</div>
+            <div class="panel-body">
+              <select class="form-control" name="currency">
+                <option value="$">$</option>
+                <option value="£">£</option>
+                <option value="¥">¥</option>
+                <option value="€">€</option>
+                <option value="₹">₹</option>
+                <option value="R">R</option>
+                <option value="د.إ">د.إ</option>
+                <option value="﷼">﷼</option>
+                <option value="Bs">Bs</option>
+                <option label="No Currency" value=" "> </option>
+              </select>
+            </div>
+          </div>
+
+          <div class="panel panel-default">
+            <div class="panel-heading">Tax</div>
+            <div class="panel-body">
+              <select class="form-control" name="fields[tax]">
+                <option value="%">% Tax</option>
+                <option value="1">Flat Tax</option>
+                <option value="0">Off</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="panel panel-default">
+            <div class="panel-heading">Shipping</div>
+            <div class="panel-body">
+              <select class="form-control" name="fields[shipping]">
+                <option value="1">On</option>
+                <option value="0">Off</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="panel panel-default">
+            <div class="panel-heading">Discounts</div>
+            <div class="panel-body">
+              <select class="form-control" name="fields[discounts]">
+                <option value="%">% Discount</option>
+                <option value="1">Flat Discount</option>
+                <option value="0">Off</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="papers">
+          <div class="invoice">
+            <div class="two-col clearfix">
+              <div class="title">
+                <h2>INVOICE</h2>
+                <div class="subtitle">
+                  <div class="input-group">
+                    <span class="input-group-addon">Ref#</span>
+                    <input class="string required form-control" required="required" aria-required="true" type="text" name="invoice[reference]" id="invoice_reference">
+                  </div>
+                </div>
+              </div>
+
+              <div class="col">
+
+                <div class="contact to" style="margin-top: 19px;">
+                  <div class="field">
+                      <%= f.input :transaction_date, :as => :string, class: 'form-control', input_html: { class: 'tdate' } %>
+                  </div>
+                  <br><br>
+
+                  <div class="field">
+                    <label class="string required control-label" for="clients"><abbr title="required">*</abbr> Select Client</label>
+                    <%= f.select_tag "invoice[client_id]", options_for_select(current_user.clients.all.order_by_name.map{|s|[s.company_name, s.id]}),:id=>"client" , prompt: "Select Client", class: 'form-control' %>
+                  </div>
+                  <br>
+                  <br>
+
+                  <div class="value">
+                    <%= f.input :notes , required: true, class: 'form-control'%>
+
+                  </div>
+
+                  <div class="value">
+                    <label class="string required control-label" for="status"><abbr title="required">*</abbr> Select Status</label>
+                    <%= f.select_tag "invoice[status]", options_for_select(invoice_status_list, @invoice.status),
+                                     :id=>"status", class: 'form-control',required: true %>
+                  </div>
+                  <br>
+                  <div class="value">
+
+                  </div>
+                </div>
+              </div>
+
+              <div class="col">
+                <div class="input-group addon-input">
+
+                  <div class="input-group-addon">
+                    <div class="form-group decimal invoice_amount">
+                      <label class="decimal required control-label" for="invoice_amount">
+                        Amount</label>
+                      <input class="numeric decimal subtotal required form-control"
+                             aria-required="true" min="0" type="number" step="any" name="invoice[amount]" value="0.00"
+                             id="invoice_amount" readonly="readonly">
+                    </div>
+
+                  </div>
+                </div>
+
+
+
+                <div class="input-group addon-input highlight">
+
+                  <div class="input-group-addon value" style="display:inline-block">
+                    <%= f.input :duedate, as: :string, required: true, input_html: { class: 'ddate' } %>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="items-holder">
+              <div class="items-table-header">
+                <div class="amount">
+                  <div class="field bordered">
+                    <input type="text" class="input-label form-control" value="Amount" name="amount_header" />
+                  </div>
+                </div>
+                <div class="unit_cost">
+                  <div class="field bordered">
+                    <input type="text" class="input-label form-control" value="Rate" name="unit_cost_header" />
+                  </div>
+                </div>
+                <div class="quantity">
+                  <div class="field bordered">
+                    <input type="text" class="input-label form-control" value="Quantity" name="quantity_header" />
+                  </div>
+                </div>
+                <div class="name">
+                  <div class="field bordered">
+                    <input type="text" class="input-label form-control" value="Description" name="item_header" />
+                  </div>
+                </div>
+              </div>
+
+              <div class="items-table append_item" >
+                <div class="item-row">
+                  <div class="main-row">
+                    <div class="delete"></div>
+                    <div class="amount value ">
+                      <input style="margin-top:-8px;" class="item-calc form-control final_amount" type="number" step="any"
+                             readonly="readonly" value="0.00"/>
+                    </div>
+                    <div class="unit_cost">
+                      <div class="input-group">
+                        <span class="input-group-addon currency-sign">$</span>
+                        <input class=" form-control item_rate"  type="number"
+                               step="0.01" autocomplete="off" min="0" name="rate[]"  onkeyup="updateCalc();" />
+                      </div>
+                    </div>
+                    <div class="quantity">
+                      <input type="number" step="any" class="item-calc form-control item_quan"
+                             autocomplete="off" step="0.01" min="0" name="quantity[]" onkeyup="updateCalc();" />
+                    </div>
+                    <div class="name">
+                      <textarea class="item-calc form-control" rows="1" name="desc[]"
+                                placeholder="Description of item/service..." required="true"></textarea>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+              <br>
+              <div class="new-line">
+                <button type="button" class="btn btn-primary line_item_add" id="" >
+                  <span class="ion-plus-round"></span>
+                  Line Item
+                </button>
+              </div>
+            </div>
+
+            <div class="two-col clearfix">
+              <%= f.button :submit, class: 'btn btn-primary' %>
+
+              <div class="input-group addon-input" >
+                <div class="input-group-addon value" style="width: 70px;text-align:right"><label>Total</label>
+                </div>
+                <input style="width: 75%;" class="form-control subtotal" type="text"  value="0.00" readonly="readonly" min="0"/>
+
+              </div>
+
+            </div>
+          </div>
+
+
+        </div>
+        </div>
+        <div class="col-md-2"></div>
+
+    <% end %>
+
+
+    </div>
+
+<div class="ng-cloak">
+  <div ng-view></div>
+</div>
+
+
+<form method="post" action="/pdf?source=lite" class="form-horizontal" id="pdf_form" target="_self">
+  <input id="pdf_json" type="hidden" name="json" />
+</form>
+<form method="post" action="/csv?source=lite" class="form-horizontal" id="csv_form" target="_self">
+  <input id="csv_json" type="hidden" name="json" />
+</form>
+</div>
+
+
+<script>
+$(function() {
+  $(".tdate").datepicker({ dateFormat: 'mm-dd-yy' }).datepicker("setDate", new Date());
+  $(".ddate").datepicker({ dateFormat: 'mm-dd-yy' }).datepicker("setDate", new Date(Date.now() + (30 * 24 * 60 * 60 * 1000)));
+});
+</script>

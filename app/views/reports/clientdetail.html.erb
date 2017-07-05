@@ -1,0 +1,154 @@
+<h2 >Client Detail Report</h2>
+<form action="/reports/clientdetail" >
+  <div class="jumbotron" style="background-color:whitesmoke">
+<div class="row" style=" margin-left: 108px;">
+    <div class="col-xs-3">
+       <label style="margin-left: 2px;">Date From</label>
+       <input type="text" name="date_from" id="date_from" value="<%= params[:date_from]%>" class="form-control">
+    </div>
+    <div class="col-xs-3">
+       <label style="margin-left: 2px;">Date To</label>
+       <input type="text" class="form-control" name="date_to" value="<%= params[:date_to]%>" id="date_to">
+    </div>
+    <div class="col-xs-3">
+  <label style="margin-left: 2px;">Select Clients</label>
+<br>
+   <%= select_tag "client_id", options_for_select(current_user.clients.order_by_name.map{|s|[s.company_name, s.id]}, params[:client_id]),
+                  id: "client" , class: 'form-control multiselect',
+                  id: 'client_id', multiple: true, size: 10 %>
+  </div>
+   <div class="col-xs-3" style="margin-top: 25px;">
+      
+    <input type="submit" name="" class="btn btn-primary form-control" style="width:60%;margin-left: -60px;" value="search" id="sub">
+    </div>
+</div>
+
+</div>
+
+<br>
+  
+
+
+</form>
+
+
+  
+
+ 
+
+
+<%if params[:action] == "clientdetail" && @invoices.present?  %>
+<div id="dvData">
+<table class="table table-hover table-striped">
+ <h2><a href="#" class="export btn btn-success pull-right">Export To Excel</a></h2>
+<br>
+  <thead>
+    <tr>
+      <td><b>TransactionId</b></td>
+      <td><b>ClientId</b></td>
+      <td><b>Client Name</b></td>
+      <td><b>Last invoice</b></td>
+      <td><b>Total Invoices</b></td>
+      <td><b>Last Cash</b></td>
+      <td colspan="3"></td>
+    </tr>
+  </thead>
+
+  <tbody>
+<% @invoices.each do |dd|%>
+   <tr>
+    <td><%= dd.id%></td>
+    <td><%= dd.client.id%></td>
+    <td><%= dd.client.company_name%></td>
+    <td><%= dd.transactioninvoices.last.updated_at.to_date%></td>
+    <td><%= dd.invoices.count%></td>
+    <td><%= number_with_precision(dd.transactioninvoices.last.amount, precision:2)%></td>
+   </tr>
+   <%end%>
+  </tbody>
+</table>
+</div>
+<%elsif params[:client_id] && @invoices.empty? %>
+
+
+<h4 class="text-center">No record found.</h4>
+
+<%end%>
+
+
+
+
+
+
+
+
+<script>
+
+
+  $(document).ready(function() {
+        $('#client_id').multiselect();
+    })
+  $(function() {
+    $( "#date_from" ).datepicker({ dateFormat: 'mm-dd-yy' }).val();
+    $( "#date_to" ).datepicker({ dateFormat: 'mm-dd-yy' }).val();
+  });
+
+
+$(document).ready(function () {
+
+    function exportTableToCSV($table, filename) {
+
+        var $rows = $table.find('tr:has(td)'),
+
+            // Temporary delimiter characters unlikely to be typed by keyboard
+            // This is to avoid accidentally splitting the actual contents
+            tmpColDelim = String.fromCharCode(11), // vertical tab character
+            tmpRowDelim = String.fromCharCode(0), // null character
+
+            // actual delimiter characters for CSV format
+            colDelim = '","',
+            rowDelim = '"\r\n"',
+
+            // Grab text from table into CSV formatted string
+            csv = '"' + $rows.map(function (i, row) {
+                var $row = $(row),
+                    $cols = $row.find('td');
+
+                return $cols.map(function (j, col) {
+                    var $col = $(col),
+                        text = $col.text();
+
+                    return text.replace(/"/g, '""'); // escape double quotes
+
+                }).get().join(tmpColDelim);
+
+            }).get().join(tmpRowDelim)
+                .split(tmpRowDelim).join(rowDelim)
+                .split(tmpColDelim).join(colDelim) + '"',
+
+            // Data URI
+            csvData = 'data:application/csv;charset=utf-8,' + encodeURIComponent(csv);
+
+        $(this)
+            .attr({
+            'download': filename,
+                'href': csvData,
+                'target': '_blank'
+        });
+    }
+
+    // This must be a hyperlink
+    $(".export").on('click', function (event) {
+        // CSV
+        exportTableToCSV.apply(this, [$('#dvData>table'), 'export.xls']);
+        
+        // IF CSV, don't do event.preventDefault() or return false
+        // We actually need this to be a typical hyperlink
+    });
+});
+
+
+
+
+</script>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">

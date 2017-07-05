@@ -1,0 +1,2 @@
+module PdfkitHelper
+end

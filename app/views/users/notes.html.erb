@@ -1,0 +1,11 @@
+<div class="">
+  <h2>Notes</h2>
+<%= form_tag(user_notes_path,method: 'post')  do |f|%>
+
+ <textarea class="form-control" rows="20" id="notes" name ="notes">
+        <%=@notes%>
+      </textarea>
+      <input type="submit" class ="btn btn-primary" value="Save Notes" 
+      style="margin:10px; float:right;">
+<%end%>
+</div>

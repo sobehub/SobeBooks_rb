@@ -1,0 +1,128 @@
+#search-div{
+    bottom: 0; left: 0; top: 0; right: 0;
+    margin: auto;
+    text-align: center;
+    width:700px;
+    vertical-align: center;
+
+}
+#search-form {
+
+
+}
+#search-q {
+    padding:8px 15px;
+    width: 100%;
+    display: inline;
+    /*background:rgba(50, 50, 50, 0.2);*/
+    /*border:0px solid #dbdbdb;*/
+}
+#search-b {
+    display: inline;
+    /*  width: 12%;
+      position:relative;
+      padding:6px 15px;
+      left:-8px;
+      border:2px solid #207cca;
+      background-color:#207cca;
+      color:#fafafa;*/
+}
+#search-b:hover  {
+    background-color:#fafafa;
+    color:#207cca;
+}
+
+#counts-all{
+    margin-top: 20px;
+
+
+}
+/*#clients-count,#vednors-count,#invoices-count,*/
+#clients-count,#vendors-count,#invoices-count
+{
+    display: inline-block;
+    margin:10px 25px 10px 10px;
+}
+#individuaL-counts{
+
+    display: block;
+}
+#tabs ul li {
+
+    display: block;
+}
+#search-result{
+
+    /* border: 1px solid red;*/
+}
+#search-heading > h1{
+    margin-left: 20px;
+
+}
+#search-form-results-pg > #search-form{
+    max-width: 700px;
+    min-width: 600px;
+    text-align: center;
+}
+
+.margin-search-form
+{
+    margin: 7px;
+}
+
+
+
+
+/* Tab Navigation */
+.nav-tabs {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+.nav-tabs > li > a {
+    background: #DADADA;
+    border-radius: 0;
+    box-shadow: inset 0 -8px 7px -9px rgba(0,0,0,.4),-2px -2px 5px -2px rgba(0,0,0,.4);
+}
+.nav-tabs > li.active > a,
+.nav-tabs > li.active > a:hover {
+    background: #F5F5F5;
+    box-shadow: inset 0 0 0 0 rgba(0,0,0,.4),-2px -3px 5px -2px rgba(0,0,0,.4);
+}
+
+/* Tab Content */
+.tab-pane {
+    background: #F5F5F5;
+    box-shadow: 0 0 4px rgba(0,0,0,.4);
+    border-radius: 0;
+    text-align: center;
+    padding: 10px;
+}
+.tab-pading
+{
+    padding-left: 0px;
+    padding-right: 0px;
+}
+#sticky {
+
+    border-radius: 0.5ex;
+}
+#sticky.stick {
+    position: fixed;
+    top: 0;
+    z-index: 10000;
+    border-radius: 0 0 0.5em 0.5em;
+}
+
+
+.form-width
+{
+    float:none;
+    margin:auto;
+}
+
+
+.searching-textfield
+{
+    width:85% !important;
+}

@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Transactioninvoices</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Clienttransaction</th>
+      <th>Invoice</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @transactioninvoices.each do |transactioninvoice| %>
+      <tr>
+        <td><%= transactioninvoice.clienttransaction %></td>
+        <td><%= transactioninvoice.invoice %></td>
+        <td><%= link_to 'Show', transactioninvoice %></td>
+        <td><%= link_to 'Edit', edit_transactioninvoice_path(transactioninvoice) %></td>
+        <td><%= link_to 'Delete', transactioninvoice, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Transactioninvoice', new_transactioninvoice_path %>

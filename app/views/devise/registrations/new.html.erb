@@ -1,0 +1,70 @@
+
+<style>
+.social_icon
+{
+  background-color: whitesmoke;
+  border: none !important;
+  box-shadow: none !important;
+  height: 560px;
+}
+</style>
+
+<script>
+
+
+$(document).ready(function(){
+    $(".msg").hide()
+
+  $('body').on('click', '.check-valid', function() {
+
+      if(!$('#checkbox-valid').is(':checked'))
+      {
+       $(".msg").show(1000)
+          return false
+      }
+})
+})
+</script>
+   <div class="alert alert-danger msg" >
+    
+     <div id="flash_alert">Please accept terms and conditions before proceeding.</div>
+   </div>
+
+<div class="authform social_icon" style="height: 560px;">
+
+  <div class="row col-xs-12 text-center" style="width:105%">
+        <h3 class="text-center">Sign up</h3>
+  </div>
+<div class="row" style="margin-left: 10px;">
+  <div class="col-xs-4"></div>
+</div>
+
+
+  <%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :role => 'form',class: 'social_icon'}) do |f| %>
+    <%= devise_error_messages! %>
+    <div class="form-group">
+      <%= f.label :name %>
+      <%= f.text_field :name, :autofocus => true,:required=> true, class: 'form-control' %>
+    </div>
+    <div class="form-group">
+      <%= f.label :email %>
+      <%= f.email_field :email, :required=> true, class: 'form-control' %>
+    </div>
+    <div class="form-group">
+      <%= f.label :password %>
+      <%= f.password_field :password, class: 'form-control' %>
+    </div>
+    <div class="form-group">
+      <%= f.label :password_confirmation %>
+      <%= f.password_field :password_confirmation, class: 'form-control' %>
+    </div>
+     <%= f.submit 'Sign up', :class => 'button right btn btn-default check-valid' %>
+       <div class="checkbox" style="width:150px">
+            <label>
+              <input type="checkbox" id="checkbox-valid" />Terms & Conditions
+              <br/>
+          </label>
+        </div>
+  <% end %>
+</div>
+       

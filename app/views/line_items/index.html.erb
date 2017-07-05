@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+ </head> 
+
+<body>
+ 
+  <h1>Line Items</h1><br>
+   
+    <div class="container">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+           <th >Price</th>
+      <th >Description</th>
+      <th >Quantity</th>
+     
+
+
+
+        </tr>
+        </thead>
+
+        <tbody>
+    <% @line_items.each do |line_item| %>
+      <tr>
+         <td><%= line_item.price %></td>
+            <td><%= line_item.description %></td>
+             <td><%= line_item.quantity %></td>
+              
+            
+
+
+        <td><%= link_to 'Show', line_item , class: "btn btn-success"  %></td>
+        <td><%= link_to 'Edit', edit_line_item_path(line_item) ,class: "btn btn-info"%></td>
+        <td><%= link_to 'Destroy', line_item, method: :delete, data: { confirm: 'Are you sure?' },class: "btn btn-danger" %></td>
+      </tr>
+      <% end %>
+        </tbody>
+      </table>
+
+<br>
+
+<%= link_to 'New Invoice', new_line_item_path , class:"btn btn-primary" %>
+</div>
+</body>
+</html>
+
+
+
+
+

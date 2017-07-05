@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Setup:</strong>
+  <%= @vendortransaction.setup %>
+</p>
+
+<p>
+  <strong>Vendor:</strong>
+  <%= @vendortransaction.vendor %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <%= @vendortransaction.user %>
+</p>
+
+<%= link_to 'Edit', edit_vendortransaction_path(@vendortransaction) %> |
+<%= link_to 'Back', vendortransactions_path %>

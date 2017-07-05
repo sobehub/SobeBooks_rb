@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Clienttransaction:</strong>
+  <%= @transactioninvoice.clienttransaction %>
+</p>
+
+<p>
+  <strong>Invoice:</strong>
+  <%= @transactioninvoice.invoice %>
+</p>
+
+<%= link_to 'Edit', edit_transactioninvoice_path(@transactioninvoice) %> |
+<%= link_to 'Back', transactioninvoices_path %>

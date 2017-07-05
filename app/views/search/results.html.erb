@@ -1,0 +1,282 @@
+<div class="row" style="margin-bottom:10px;">
+	<div id="search-heading" class="col-md-4" >	
+		<h1 style="display:inline;">Search Results</h1>	
+	</div>
+	
+</div>
+<div id= "search-result" >
+
+
+
+
+
+
+
+
+
+	<div class="col-xs-3"> <!-- required for floating -->
+	    <!-- Nav tabs -->
+	    <ul class="nav nav-tabs tabs-left nav nav-tabs" id="myTab">
+	    	<%if @invoices.count>0 %>
+	      		<li class="active"><a href="#portfolio-search-results" data-toggle="tab">Invoices(<%=@invoices.count%>)</a></li>
+	      	<%end%>
+	      	<%if @clients.count>0 %>
+	      		<li ><a href="#products-search-results" data-toggle="tab">Clients(<%=@clients.count%>)</a></li>
+	      	<%end%>
+
+			<%if @vendors.count>0 %>
+				<li><a href="#apps-search-results" data-toggle="tab">Vendors(<%=@vendors.count%>)</a></li>
+			<%end%>
+			<%if @bills.count>0 %>
+				<li><a href="#bills-search-results" data-toggle="tab">Bills(<%=@bills.count%>)</a></li>
+			<%end%>
+			
+
+
+
+	    </ul>
+	</div>
+
+	<div class="col-xs-9">
+	<% if @invoices.present? || @clients.present? || @vendors.present? || @bills.present? %>
+	    <!-- Tab panes -->
+	    <div class="tab-content">
+	      <%active_tab=false%>
+	      <%if @invoices.count>0%>
+	      	<%active_tab=true%>		
+	      <%end%>
+
+	      <%if active_tab%>
+	      	<div class="tab-pane active" id="portfolio-search-results">
+	      <%else%>
+	      	<div class="tab-pane" id="portfolio-search-results">
+	      <%end%>
+    
+			<table class="table table-striped table-hover table-responsive table-app-setup six-columned">
+			  <thead>
+			    <tr>
+			    <th>Client Name </th>  
+			  	<th>Invoice Date </th> 
+			  	<th>Invoice# </th>
+			  	<th> Reference </th>
+			  	<th> Amount </th> 
+			  	<th> Balance </th> 
+			  	<th>Last Paid </th> 
+			     <th>Total Paid </th> 
+			     <th>Status</th> 
+
+
+
+
+			      <th colspan="3"></th>
+			    </tr>
+			  </thead>
+
+			  <tbody>
+			    <% @invoices.each do |invoice| %>
+			      <tr>
+			      	<td><%= invoice.client.present? ? invoice.client.name : '---'%></td>
+			      	<td><%= invoice.created_at%></td>
+			        <td><%= invoice.id%></td>
+			        <td><%= invoice.reference%></td>
+			        <td><%= invoice.amount%></td>
+			        <td><%= invoice.balance%></td>
+			        <td><%= invoice.lastpayment%></td>
+			        <td><%= invoice.totalpaid%></td>
+			        <td><%= invoice.status%></td>
+
+                 </tr>
+			    <% end %>
+			  </tbody>
+			</table>
+    
+
+	      </div>
+
+	      <%if @clients.count>0 && !active_tab%>
+	      	<%active_tab=true%>
+	      	<%temp_var=true%>
+	      <%else%>
+	      	<%temp_var=false%>		
+	      <%end%>
+
+	      <%if active_tab && temp_var%>
+	      	<div class="tab-pane active" id="products-search-results">
+	      <%else%>
+	      	<div class="tab-pane" id="products-search-results">
+	      <%end%>
+
+	      
+
+			<table class="table">
+			  <thead>
+			    <tr>
+			    	<!-- clinet's fields here  -->
+			      <th>Client name</th>
+			      <th>Company Name</th>
+			      <th>Email</th>
+			      <th>Phone</th>
+			      <th>Identifier</th>
+			      <th>Reference</th>
+			      <th>Notes</th>
+			     <th>Status</th> 
+
+
+			      <th colspan="3"></th>
+			    </tr>
+			  </thead>
+
+			  <tbody>
+			    <% @clients.each do |client| %>
+			      
+			      <tr>
+			        <td><%= client.name? ? client.name : "---" %></td>
+			        <td><%= client.company_name%></td>
+			        <td><%= client.email%></td>
+			        <td><%= client.phone%></td>
+			        <td><%= client.identifier%></td>
+			        <td><%= client.reference%></td>
+			        <td><%= client.notes%></td>
+			        <td><%= client.status%></td>
+
+
+
+
+
+			      </tr>
+			    <% end %>
+			  </tbody>
+			</table>
+
+	      </div>
+
+	      <%if @vendors.count>0 && !active_tab%>
+		     <%active_tab=true%>
+		     <%temp_var=true%>
+	      <%else%>
+	      	<%temp_var=false%>		
+	      <%end%>
+
+	      <%if active_tab && temp_var%>
+	      	<div class="tab-pane active" id="apps-search-results">
+	      <%else%>
+	      	<div class="tab-pane" id="apps-search-results">
+	      <%end%>
+
+	      
+	      	<!-- vendor's fields here  -->
+			<table class="table">
+			  <thead>
+			    <tr>
+			      <th>Vendor name</th>
+			      <th>Company Name</th>
+			      <th>Email</th>
+			      <th>Phone</th>
+			      <th>Identifier</th>
+			      <th>Reference</th>
+			      <th>Notes</th>
+			  	   <th>Status</th> 
+			      <th colspan="3"></th>
+			    </tr>
+			  </thead>
+
+			  <tbody>
+			    <% @vendors.each do |vendor| %>
+			      <tr>
+			      	<td><%= vendor.name%></td>
+			      	<td><%= vendor.company_name%></td>
+			      	<td><%= vendor.email%></td>
+			       <td><%= vendor.phone%></td>
+			       <td><%= vendor.identifier%></td>
+			       <td><%= vendor.reference%></td>
+			       <td><%= vendor.notes%></td>
+			       <td><%= vendor.status%></td>
+
+			      </tr>
+			    <% end %>
+			  </tbody>
+			</table>
+
+	     	</div>
+
+
+	      <%if @bills.count>0 && !active_tab%>
+		     <%active_tab=true%>
+		     <%temp_var=true%>
+	      <%else%>
+	      	<%temp_var=false%>		
+	      <%end%>
+
+	      <%if active_tab && temp_var%>
+	      	<div class="tab-pane active" id="bills-search-results">
+	      <%else%>
+	      	<div class="tab-pane" id="bills-search-results">
+	      <%end%>
+
+	      
+	     	<table class="table table-striped table-hover table-responsive table-app-setup six-columned">
+			  <thead>
+			    <tr>
+			    <th>Vendor Name </th>  
+			  	<th>Vendor Date </th> 
+			  	<th>Bill# </th>
+			  	<th> Reference </th>
+			  	<th> Amount </th> 
+			  	<th> Balance </th> 
+			  	<th>Last Paid </th> 
+			     <th>Total Paid </th> 
+			  	   <th>Status</th> 
+
+
+
+
+			      <th colspan="3"></th>
+			    </tr>
+			  </thead>
+
+			  <tbody>
+			    <% @bills.each do |bill| %>
+			      <tr>
+			      	<td><%= bill.vendor.present? ? bill.vendor.name : '---'%></td>
+			      	<td><%= bill.created_at%></td>
+			        <td><%= bill.id%></td>
+			        <td><%= bill.reference%></td>
+			        <td><%= bill.amount%></td>
+			        <td><%= bill.balance%></td>
+			        <td><%= bill.lastpayment%></td>
+			        <td><%= bill.totalpaid%></td>
+			        <td><%= bill.status%></td>
+
+
+                 </tr>
+			    <% end %>
+			  </tbody>
+			</table>
+
+	     	</div>
+
+ 		  
+ 		  
+	  	
+	    </div>
+	<% else %>
+		<div class="text-center"> <h3>Nothing found...</h3></div>
+	<% end %>
+	</div>  
+</div>
+<script>
+    $('#myTab a').click(function (e) {
+        e.preventDefault();
+        $(this).tab('show');
+    });
+
+    // store the currently selected tab in the hash value
+    $("ul.nav-tabs > li > a").on("shown.bs.tab", function (e) {
+        var id = $(e.target).attr("href").substr(1);
+        window.location.hash = id;
+    });
+
+    // on load of the page: switch to the currently selected tab
+    var hash = window.location.hash;
+    $('#myTab a[href="' + hash + '"]').tab('show');
+</script>

@@ -1,0 +1,47 @@
+
+<h1>Payments to Vendors</h1>
+
+<table class="table table-hover table-striped">
+  <%= link_to 'New Transaction', new_vendortransaction_path,
+              class: "btn btn-primary pull-right new-btn-top-right text-right" %>
+  <thead>
+  <tr>
+    <th>Transaction Id</th>
+    <th>Reference#/Check#/Wire#</th>
+    <th>Vendor Name</th>
+    <th>Bank Account</th>
+    <th>Payment Type</th>
+    <th>Transaction Date</th>
+    <th>Due Date</th>
+    <th>Bills</th>
+    <th>Amount</th>
+    <th colspan="3"></th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <% @vendortransactions.each do |vendortransaction| %>
+      <tr>
+        <% transaction_bill = Transactionbill.where(vendortransaction_id: vendortransaction.id) %>
+        <td><%= vendortransaction.id%></td>
+        <td><%= transaction_bill.present? ? transaction_bill.first.reference_no : '---' %></td>
+        <td><%= vendortransaction.vendor.present? ? vendortransaction.vendor.company_name: '---' %></td>
+        <td><%= vendortransaction.setup.present? ? vendortransaction.setup.typeofsetup : '---' %></td>
+        <td><%= transaction_bill.present? ? transaction_bill.first.Cash_type : '---' %></td>
+        <td><%= display_formatted_date(vendortransaction.transaction_date) %></td>
+        <td><%= display_formatted_date(vendortransaction.duedate) %></td>
+        <td><%= transaction_bill.present? ? transaction_bill.count : '---' %></td>
+        <td>
+          <%= number_with_precision(vendortransaction.transactionbills.map{|so| so.amount}.compact.sum, precision: 2) if  vendortransaction.transactionbills.present? %>
+        </td>
+        <td>
+          <%= link_to 'Edit', edit_vendortransaction_path(vendortransaction), class: "btn btn-primary", style: 'margin-bottom: 10px;' %>
+          <%= link_to 'Delete', vendortransaction, method: :delete,
+                        data: { confirm: 'Are you sure?' } ,class: "btn btn-danger"%>
+        </td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>
+
+

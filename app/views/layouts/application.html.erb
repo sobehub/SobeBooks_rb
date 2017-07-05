@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= content_for?(:title) ? yield(:title) : "SOBE Books" %></title>
+    <meta name="description" content="<%= content_for?(:description) ? yield(:description) : "SOBE Books" %>">
+    <%= stylesheet_link_tag 'application', media: 'all'%>
+    <%= javascript_include_tag 'application' %>
+    <%= csrf_meta_tags %>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <%= render 'layouts/navigation' %>
+      </header>
+      
+      <main role="main" id="main">
+        <div class="row" style="margin-top: 1%; background-color:#fff;">
+          <ol class="breadcrumb" style="background-color:#fff;">
+            <%= render_breadcrumbs :tag => :li, :separator => "" %>
+          </ol>
+        </div>
+        <%= render 'layouts/messages' %>
+        <%= yield %>
+      </main>
+    </div>
+    <footer class="footer">
+      <div class="container text-center" style="color:#fff; text-align:center">
+        <br/>Copyrights <%= Time.new.year%>
+        <a href="/public/privacy" style="margin:15px;">Privacy</a>
+        <a href="/public/conditions">Terms &amp; Conditions</a>
+
+      <!-- <p class="text-muted">Place sticky footer content here.</p> -->
+      </div>
+    </footer>
+  </body>
+
+</html>
+<script>
+  // var footer = $(".footer");
+  // var pos = footer.position();
+  // var height = $(window).height();
+  // height = height - pos.top;
+  // height = height - footer.height();
+  // if (height > 0) {
+  //   footer.css({
+  //   'margin-top': height + 'px'
+  //   });
+  // }
+  $(function() {
+    $(".tdate").datepicker({ dateFormat: 'mm-dd-yy' });
+    $(".ddate").datepicker({ dateFormat: 'mm-dd-yy' });
+  });
+</script>

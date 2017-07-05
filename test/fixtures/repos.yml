@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  repo_name: MyString
+  branch_count: 1
+  last_commit: 2015-12-09 14:36:59
+  app_id: 
+
+two:
+  repo_name: MyString
+  branch_count: 1
+  last_commit: 2015-12-09 14:36:59
+  app_id: 

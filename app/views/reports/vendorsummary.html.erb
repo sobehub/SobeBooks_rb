@@ -1,0 +1,166 @@
+<h2>Vendor Summary Report</h2>
+<form action="/reports/vendorsummary" >
+  <div class="jumbotron" style="background-color:whitesmoke">
+    <div class="row" >
+      <div class="col-xs-2">
+        <label style="margin-left: 2px;">Date From</label>
+        <input type="text" name="date_from" id="date_from" value="<%= params[:date_from]%>" class="form-control">
+      </div>
+      <div class="col-xs-2">
+        <label style="margin-left: 2px;">Date To</label>
+        <input type="text" class="form-control" value="<%= params[:date_to]%>" name="date_to" id="date_to">
+      </div>
+      <div class="col-xs-3">
+        <label style="margin-left: 2px;">Select Vendor</label>
+
+        <%= select_tag "vendor_id",
+                       options_for_select(current_user.vendors.order_by_name.map{|s|[s.company_name, s.id]}, params[:vendor_id].to_i),
+                       id: "client", prompt: "Select Vendor", class: 'form-control' , id: 'vendor_id' %>
+      </div>
+      <div class="col-xs-3">
+        <label style="margin-left: 2px;">Vendor Type</label>
+        <select name="vendor_type" id="vendor_type" class="form-control">
+          <option value="">Select Vendor type</option>
+          <option value="active" <%= 'selected' if params[:vendor_type] == 'active'%>>Active</option>
+          <option value="inactive" <%= 'selected' if params[:vendor_type] == 'inactive'%>>Inactive</option>
+          <option value="past due" <%= 'selected' if params[:vendor_type] == 'past due'%>>Past due</option>
+        </select>
+      </div>
+      <div class="col-xs-2" style="margin-top: 25px;">
+        <input type="submit" name="" class="btn btn-primary form-control" value="search" id="sub">
+
+      </div>
+    </div>
+  </div>
+</form>
+</div>
+</div>
+<div id="dvData">
+
+  <% if @bills.present? %>
+      <% if !params[:vendor_type].present? || @bills.first.vendor.status == params[:vendor_type] %>
+          <table class="table table-hover table-striped">
+            <h2>
+              <a href="#" id="gen_btn" class="export btn btn-success pull-right">Export To Excel</a>
+            </h2>
+            <br>
+
+            <thead>
+            <tr>
+              <td><b>VendorId</b></td>
+              <td><b>Name</b></td>
+              <td><b>Last Bill</b></td>
+              <td><b>Total Bills</b></td>
+              <td><b>Last Payment</b></td>
+              <td><b>Receipt</b></td>
+              <td><b>Total Payments</b></td>
+
+              <th colspan="3"></th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <% if !params[:vendor_id].present? %>
+                <%
+                  billed_vendors = @bills.collect { |i| i.vendor.id }
+                  vendors = Vendor.where("id IN (?)", billed_vendors)
+
+                  vendors.each do |vendor|
+                %>
+                  <tr>
+                    <td><%= vendor.id %></td>
+                    <td><%= vendor.bills.first.vendor.company_name %></td>
+                    <td><%= vendor.bills.first.transactionbills.present? ?
+                                display_formatted_date(vendor.bills.first.transactionbills.last.updated_at) : '--' %>
+                    </td>
+                    <td><%= vendor.bills.first.vendor.bills.map { |b| b.amount }.compact.sum %></td>
+                    <td><%= number_with_precision(vendor.bills.first.transactionbills.present? ?
+                                                      vendor.bills.first.transactionbills.last.amount : '--', precision:2) %></td>
+                    <td><%= vendor.bills.first.id %></td>
+                    <td><%= number_with_precision(total_payment_vendor(vendor.vendortransactions), precision: 2) %></td>
+                  </tr>
+
+                <% end %>
+            <% else %>
+              <tr>
+                <td><%= @bills.first.vendor_id %></td>
+                <td><%= @bills.first.vendor.company_name %></td>
+                <td><%= @bills.first.transactionbills.present? ? display_formatted_date(@bills.first.transactionbills.last.updated_at) : '--' %></td>
+                <td><%= number_with_precision(@bills.first.vendor.bills.map { |b| b.amount }.compact.sum, precision: 2) %></td>
+                <td><%= number_with_precision(@bills.first.transactionbills.present? ?
+                                                  @bills.first.transactionbills.last.amount : '--', precision:2) %></td>
+                <td><%= @bills.first.id %></td>
+                <td><%= number_with_precision(total_payment_vendor(@bills.first.vendor.vendortransactions), precision: 2) %></td>
+              </tr>
+                <% end %>
+
+                </tbody>
+                </table>
+            <% end %>
+      <% elsif params[:vendor_id] && @bills.empty? %>
+          <h4 class="text-center">No record found.</h4>
+      <%end%>
+      </div>
+      <script>
+
+        $(function() {
+          $( "#date_from" ).datepicker({ dateFormat: 'mm-dd-yy' }).val();
+          $( "#date_to" ).datepicker({ dateFormat: 'mm-dd-yy' }).val();
+        });
+
+        $(document).ready(function () {
+
+          function exportTableToCSV($table, filename) {
+
+            var $rows = $table.find('tr:has(td)'),
+
+            // Temporary delimiter characters unlikely to be typed by keyboard
+            // This is to avoid accidentally splitting the actual contents
+                tmpColDelim = String.fromCharCode(11), // vertical tab character
+                tmpRowDelim = String.fromCharCode(0), // null character
+
+            // actual delimiter characters for CSV format
+                colDelim = '","',
+                rowDelim = '"\r\n"',
+
+            // Grab text from table into CSV formatted string
+                csv = '"' + $rows.map(function (i, row) {
+                      var $row = $(row),
+                          $cols = $row.find('td');
+
+                      return $cols.map(function (j, col) {
+                        var $col = $(col),
+                            text = $col.text();
+
+                        return text.replace(/"/g, '""'); // escape double quotes
+
+                      }).get().join(tmpColDelim);
+
+                    }).get().join(tmpRowDelim)
+                        .split(tmpRowDelim).join(rowDelim)
+                        .split(tmpColDelim).join(colDelim) + '"',
+
+            // Data URI
+                csvData = 'data:application/csv;charset=utf-8,' + encodeURIComponent(csv);
+
+            $(this)
+                .attr({
+                  'download': filename,
+                  'href': csvData,
+                  'target': '_blank'
+                });
+          }
+
+          // This must be a hyperlink
+          $(".export").on('click', function (event) {
+            // CSV
+            exportTableToCSV.apply(this, [$('#dvData>table'), 'export.xls']);
+
+            // IF CSV, don't do event.preventDefault() or return false
+            // We actually need this to be a typical hyperlink
+          });
+        });
+
+
+      </script>
+      <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">

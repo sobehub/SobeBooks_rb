@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+ </head> 
+
+
+ <body>
+
+  <div class="container">
+
+<h2>Vendor Detail</h2>
+  <table class="table table-hover table-striped">
+      <tbody>
+        <tr>
+          <td><b>Name</b></td>
+          <td><%= @vendor.name%></td>
+        </tr>
+        <tr>
+          <td><b>Company Name</b></td>
+          <td ><%=  @vendor.company_name %></td>
+        </tr>
+        <tr>
+          <td><b>Email</b></td>
+          <td ><%=@vendor.email%></td>
+        </tr>
+        <tr>
+          <td><b>Phone</b></td>
+          <td ><%= @vendor.phone %></td>
+        </tr>
+        <tr>
+          <td><b>Identifier</b></td>
+          <td ><%= @vendor.identifier%></td>
+        </tr>
+        <tr>
+          <td><b>Reference</b></td>
+          <td ><%= @vendor.reference%></td>
+        </tr>
+        <tr>
+          <td><b>Notes</b></td>
+          <td ><%= @vendor.notes%></td>
+        </tr>
+         <tr>
+          <td><b>Vendor Type</b></td>
+        <td><%= @vendor.setup.present? ? @vendor.setup.typeofsetup : '---' %></td>
+        </tr>
+        <tr>
+          <td><b>Status</b></td>
+          <td ><%= @vendor.status.present? ? @vendor.status : '---'%></td>
+        </tr>
+
+                  
+      </tbody>
+      </table>
+  <div style = display:inline-block><%= link_to 'Edit', edit_vendor_path(@vendor), class: "btn btn-info" %></div>
+           <%= link_to 'Back', vendors_path, class: "btn btn-warning" %>
+
+
+    
+</div>
+<h2>Open Bills</h2>
+
+ <table class="table table-hover table-striped">
+        <thead>
+          <tr>
+       <th >Bill Num</th>
+       <th >Reference</th>
+       <th >Balance</th>
+      <th >Last Paid</th>
+      <th >Amount</th>
+      <th >Total Paid</th>
+      <th >Notes</th>
+      <th >Status</th>
+
+
+
+        </tr>
+        </thead>
+
+        <tbody>
+          <% @unpaidvendor.each do |bill| %>
+      <tr>
+        <td><%= link_to bill.id, bill%></td>
+        <td><%= bill.reference%></td>
+        <td><%= bill.balance %></td>
+        <td><%= bill.lastpayment %></td>
+        <td><%= bill.amount %></td>
+        <td><%= bill.totalpaid%></td>
+        <td><%= bill.notes%></td>
+        <td><%= bill.status.present? ? bill.status.titleize : "--" %>
+        </td>
+        <td><%= link_to 'Delete', bill, method: :delete, data: { confirm: 'Are you sure?' },class: "btn btn-danger" %></td>
+         
+      </tr>
+      <% end %>
+        </tbody>
+      </table>
+      </div>
+
+</body>
+</html>
+

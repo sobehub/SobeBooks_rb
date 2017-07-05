@@ -1,0 +1,7 @@
+#!/bin/bash
+set -e
+
+/opt/rh/rh-ruby22/root/usr/bin/rake db:create
+/opt/rh/rh-ruby22/root/usr/bin/rake db:migrate
+
+exec "$@"
