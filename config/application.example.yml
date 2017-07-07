@@ -10,6 +10,10 @@ development:
  # Database user
  db_username:
  db_password:
+ # comment this if you want to user Docker
+ db_host    : localhost
+ # uncomment this if you want to use Docker
+ #db_host    : db
 
  # Email user
  user_name:
@@ -27,6 +31,11 @@ test:
  # Database user
  db_username:
  db_password:
+ # comment this if you want to user Docker
+ db_host    : localhost
+ # uncomment this if you want to use Docker
+ #db_host    : db
+
 
  # Email user
  user_name:
@@ -45,6 +54,10 @@ production:
  # Database user
  db_username:
  db_password:
+ # comment this if you want to user Docker
+ db_host    : localhost
+ # uncomment this if you want to use Docker
+ #db_host    : db
 
  # Email user
  user_name:
